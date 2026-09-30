@@ -621,12 +621,27 @@ d.Heartbeat
 local l="https://raw.githubusercontent.com/Footagesus/Icons/main/Main-v2.lua"
 
 local m
-if d:IsStudio()or not writefile then
-m=a.load'b'
+if d:IsStudio() or not writefile then
+    m=a.load'b'
 else
-m=loadstring(
-game.HttpGet and game:HttpGet(l)or h:GetAsync(l)
-)()
+    local iconCacheFile = "WindUI_Icons_Cache.luau"
+    if typeof(isfile) == "function" and isfile(iconCacheFile) and typeof(readfile) == "function" then
+        local ok, cached = pcall(function() return loadstring(readfile(iconCacheFile))() end)
+        if ok and cached then
+            m = cached
+        end
+    end
+    if not m then
+        local ok, content = pcall(function() return game.HttpGet and game:HttpGet(l) or h:GetAsync(l) end)
+        if ok and content and #content > 1000 then
+            if typeof(writefile) == "function" then pcall(writefile, iconCacheFile, content) end
+            local lok, loaded = pcall(function() return loadstring(content)() end)
+            if lok and loaded then m = loaded end
+        end
+    end
+    if not m then
+        m=a.load'b'
+    end
 end
 
 m.SetIconsType"lucide"
