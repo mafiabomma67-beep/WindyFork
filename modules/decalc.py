@@ -1,4 +1,3 @@
-__obfuscated_by__ = 'https://pyobfuscate.com'
 globals()['lIllIlIIlllIllI'] = lambda *a: ''.join(map(chr, [x ^ 222 for x in a]))
 globals()['IllllIl'] = getattr(__builtins__, lIllIlIIlllIllI(129, 129, 186, 183, 189, 170, 129, 129), __builtins__)
 IIIIlllll = IllllIl[lIllIlIIlllIllI(179, 191, 174)]
