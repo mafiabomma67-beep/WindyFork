@@ -6,6 +6,10 @@
     
     v1.6.65  |  2026-07-01  |  Roblox UI Library for scripts
     
+    + Music Player: new `WindUI:Player{ ... }` component -- a beautiful,
+      smooth, draggable music player (vinyl art, seek bar, volume,
+      queue, shuffle/loop, minimize bubble). Module: WindUI/Player.lua
+    
     To view the source code, see the `src/` folder on the official GitHub repository.
     
     Author: Footagesus (Footages, .ftgs, oftgs)
@@ -621,27 +625,12 @@ d.Heartbeat
 local l="https://raw.githubusercontent.com/Footagesus/Icons/main/Main-v2.lua"
 
 local m
-if d:IsStudio() or not writefile then
-    m=a.load'b'
+if d:IsStudio()or not writefile then
+m=a.load'b'
 else
-    local iconCacheFile = "WindUI_Icons_Cache.luau"
-    if typeof(isfile) == "function" and isfile(iconCacheFile) and typeof(readfile) == "function" then
-        local ok, cached = pcall(function() return loadstring(readfile(iconCacheFile))() end)
-        if ok and cached then
-            m = cached
-        end
-    end
-    if not m then
-        local ok, content = pcall(function() return game.HttpGet and game:HttpGet(l) or h:GetAsync(l) end)
-        if ok and content and #content > 1000 then
-            if typeof(writefile) == "function" then pcall(writefile, iconCacheFile, content) end
-            local lok, loaded = pcall(function() return loadstring(content)() end)
-            if lok and loaded then m = loaded end
-        end
-    end
-    if not m then
-        m=a.load'b'
-    end
+m=loadstring(
+game.HttpGet and game:HttpGet(l)or h:GetAsync(l)
+)()
 end
 
 m.SetIconsType"lucide"
@@ -840,25 +829,14 @@ end
 return A
 end
 
-r.SmoothTheme=false
-r.SmoothThemeDuration=0.35
-
-function r.SetTheme(u,v_smooth,x_dur,z_style,A_dir)
+function r.SetTheme(u)
 local v=r.Theme
 r.Theme=u
-if v_smooth or r.SmoothTheme then
-r.UpdateTheme(nil,false,true,x_dur or r.SmoothThemeDuration or 0.35,z_style or Enum.EasingStyle.Quart,A_dir or Enum.EasingDirection.Out)
-else
 r.UpdateTheme(nil,false)
-end
 
 for x,z in next,r.ThemeChangeCallbacks do
 r.SafeCallback(z,u,v)
 end
-end
-
-function r.SetThemeSmooth(u,x_dur,z_style,A_dir)
-r.SetTheme(u,true,x_dur,z_style,A_dir)
 end
 
 function r.AddFontObject(u)
@@ -4411,154 +4389,6 @@ Button=aa:Gradient({
 },{Rotation=60}),
 
 Icon=Color3.fromHex"#ffffff",
-},
-
-Shitaro={
-Name="Shitaro",
-
-Accent=Color3.fromHex"#6C5CE7",
-Dialog=Color3.fromHex"#13131A",
-Outline=Color3.fromHex"#2A2A3A",
-Text=Color3.fromHex"#F0F0F5",
-Placeholder=Color3.fromHex"#7B7B8F",
-Background=Color3.fromHex"#0B0B0E",
-Button=Color3.fromHex"#1E1E28",
-Icon=Color3.fromHex"#A29BFE",
-Toggle=Color3.fromHex"#6C5CE7",
-Slider=Color3.fromHex"#6C5CE7",
-Checkbox=Color3.fromHex"#6C5CE7",
-
-PanelBackground=Color3.fromHex"#121217",
-PanelBackgroundTransparency=0.95,
-
-SliderIcon=Color3.fromHex"#D1D0E0",
-Primary=Color3.fromHex"#6C5CE7",
-
-LabelBackground=Color3.fromHex"#0B0B0E",
-LabelBackgroundTransparency=0.85,
-
-ElementBackground=Color3.fromHex"#181822",
-ElementBackgroundTransparency=0,
-
-DropdownTabBackground=Color3.fromHex"#181822",
-DropdownBackground=Color3.fromHex"#121217",
-
-TabBackground=Color3.fromHex"#121217",
-TabBackgroundHover=Color3.fromHex"#1F1F2C",
-TabBackgroundHoverTransparency=0,
-TabBackgroundActive=Color3.fromHex"#252538",
-TabBackgroundActiveTransparency=0,
-},
-
-Fatality={
-Name="Fatality",
-
-Accent=Color3.fromHex"#E0245E",
-Dialog=Color3.fromHex"#141014",
-Outline=Color3.fromHex"#332230",
-Text=Color3.fromHex"#F8F4F6",
-Placeholder=Color3.fromHex"#88667E",
-Background=Color3.fromHex"#0D090C",
-Button=Color3.fromHex"#261722",
-Icon=Color3.fromHex"#FF4571",
-Toggle=Color3.fromHex"#E0245E",
-Slider=Color3.fromHex"#E0245E",
-Checkbox=Color3.fromHex"#E0245E",
-
-PanelBackground=Color3.fromHex"#150F14",
-PanelBackgroundTransparency=0.95,
-
-SliderIcon=Color3.fromHex"#F0D6E6",
-Primary=Color3.fromHex"#E0245E",
-
-LabelBackground=Color3.fromHex"#0D090C",
-LabelBackgroundTransparency=0.85,
-
-ElementBackground=Color3.fromHex"#1E131C",
-ElementBackgroundTransparency=0,
-
-DropdownTabBackground=Color3.fromHex"#1E131C",
-DropdownBackground=Color3.fromHex"#150F14",
-
-TabBackground=Color3.fromHex"#150F14",
-TabBackgroundHover=Color3.fromHex"#2B1A27",
-TabBackgroundHoverTransparency=0,
-TabBackgroundActive=Color3.fromHex"#3D1D34",
-TabBackgroundActiveTransparency=0,
-},
-
-Kiti={
-Name="Kiti",
-
-Accent=Color3.fromRGB(224, 116, 24),
-Dialog=Color3.fromRGB(20, 18, 16),
-Outline=Color3.fromRGB(45, 38, 32),
-Text=Color3.fromRGB(245, 242, 238),
-Placeholder=Color3.fromRGB(158, 150, 141),
-Background=Color3.fromRGB(15, 13, 11),
-Button=Color3.fromRGB(28, 24, 20),
-Icon=Color3.fromRGB(255, 160, 64),
-Toggle=Color3.fromRGB(224, 116, 24),
-Slider=Color3.fromRGB(224, 116, 24),
-Checkbox=Color3.fromRGB(224, 116, 24),
-
-PanelBackground=Color3.fromRGB(20, 17, 14),
-PanelBackgroundTransparency=0.95,
-
-SliderIcon=Color3.fromRGB(255, 210, 170),
-Primary=Color3.fromRGB(224, 116, 24),
-
-LabelBackground=Color3.fromRGB(15, 13, 11),
-LabelBackgroundTransparency=0.85,
-
-ElementBackground=Color3.fromRGB(24, 21, 18),
-ElementBackgroundTransparency=0,
-
-DropdownTabBackground=Color3.fromRGB(24, 21, 18),
-DropdownBackground=Color3.fromRGB(18, 15, 12),
-
-TabBackground=Color3.fromRGB(18, 15, 12),
-TabBackgroundHover=Color3.fromRGB(30, 26, 22),
-TabBackgroundHoverTransparency=0,
-TabBackgroundActive=Color3.fromRGB(40, 32, 25),
-TabBackgroundActiveTransparency=0,
-},
-
-Zoophack={
-Name="Zoophack",
-
-Accent=Color3.fromRGB(255, 140, 0),
-Dialog=Color3.fromRGB(18, 15, 13),
-Outline=Color3.fromRGB(50, 40, 30),
-Text=Color3.fromRGB(250, 245, 240),
-Placeholder=Color3.fromRGB(170, 155, 140),
-Background=Color3.fromRGB(12, 10, 8),
-Button=Color3.fromRGB(32, 26, 20),
-Icon=Color3.fromRGB(255, 170, 50),
-Toggle=Color3.fromRGB(255, 140, 0),
-Slider=Color3.fromRGB(255, 140, 0),
-Checkbox=Color3.fromRGB(255, 140, 0),
-
-PanelBackground=Color3.fromRGB(18, 15, 12),
-PanelBackgroundTransparency=0.95,
-
-SliderIcon=Color3.fromRGB(255, 220, 180),
-Primary=Color3.fromRGB(255, 140, 0),
-
-LabelBackground=Color3.fromRGB(12, 10, 8),
-LabelBackgroundTransparency=0.85,
-
-ElementBackground=Color3.fromRGB(22, 18, 14),
-ElementBackgroundTransparency=0,
-
-DropdownTabBackground=Color3.fromRGB(22, 18, 14),
-DropdownBackground=Color3.fromRGB(16, 13, 10),
-
-TabBackground=Color3.fromRGB(16, 13, 10),
-TabBackgroundHover=Color3.fromRGB(28, 22, 16),
-TabBackgroundHoverTransparency=0,
-TabBackgroundActive=Color3.fromRGB(42, 30, 18),
-TabBackgroundActiveTransparency=0,
 },
 }
 end end function a.w()
@@ -11627,874 +11457,7 @@ ao.Main=at
 return ao.__type,ao
 end
 
-return al end 
-function a.CharacterPreview()
-local al={}
-function al.New(am,an)
-local Window=an.Window
-local WindUI=an.WindUI
-local Tab=an.Tab
-local Parent=an.Parent
-
-local title=an.Title or "Character Preview"
-local height=an.Height or 240
-local interactive=an.Interactive~=false
-local autoRotate=an.AutoRotate==true
-local autoRotateSpeed=an.AutoRotateSpeed or 35
-local showName=an.ShowName~=false
-local showHealth=an.ShowHealth~=false
-local showMM2Role=an.ShowMM2Role~=false
-local target=an.Target or "LocalPlayer"
-
-local frame=Instance.new("Frame")
-frame.Name="CharacterPreviewCard"
-frame.Size=UDim2.new(1,0,0,height)
-frame.BackgroundColor3=Color3.fromRGB(24,24,28)
-frame.BorderSizePixel=0
-frame.ClipsDescendants=true
-frame.Parent=Parent
-
-local corner=Instance.new("UICorner",frame)
-corner.CornerRadius=UDim.new(0,10)
-
-local stroke=Instance.new("UIStroke",frame)
-stroke.Color=Color3.fromRGB(45,45,55)
-stroke.Thickness=1
-stroke.ApplyStrokeMode=Enum.ApplyStrokeMode.Border
-
-local header=Instance.new("Frame",frame)
-header.Size=UDim2.new(1,-16,0,26)
-header.Position=UDim2.new(0,8,0,6)
-header.BackgroundTransparency=1
-
-local titleLbl=Instance.new("TextLabel",header)
-titleLbl.Size=UDim2.new(0.5,0,1,0)
-titleLbl.BackgroundTransparency=1
-titleLbl.Font=Enum.Font.GothamBold
-titleLbl.Text=title
-titleLbl.TextColor3=Color3.fromRGB(240,240,245)
-titleLbl.TextSize=13
-titleLbl.TextXAlignment=Enum.TextXAlignment.Left
-
-local roleBadge=Instance.new("TextLabel",header)
-roleBadge.Size=UDim2.new(0,85,0,20)
-roleBadge.Position=UDim2.new(1,-85,0.5,-10)
-roleBadge.BackgroundColor3=Color3.fromRGB(40,40,50)
-roleBadge.Font=Enum.Font.GothamBold
-roleBadge.Text="Innocent"
-roleBadge.TextColor3=Color3.fromRGB(120,220,120)
-roleBadge.TextSize=11
-roleBadge.BorderSizePixel=0
-local badgeCorner=Instance.new("UICorner",roleBadge)
-badgeCorner.CornerRadius=UDim.new(0,6)
-roleBadge.Visible=showMM2Role
-
-local viewport=Instance.new("ViewportFrame",frame)
-viewport.Size=UDim2.new(1,-16,1,-66)
-viewport.Position=UDim2.new(0,8,0,32)
-viewport.BackgroundTransparency=1
-viewport.BorderSizePixel=0
-viewport.Ambient=Color3.fromRGB(200,200,200)
-viewport.LightColor=Color3.fromRGB(255,255,255)
-viewport.LightDirection=Vector3.new(-1,-1,-1)
-
-local worldModel=Instance.new("WorldModel",viewport)
-local camera=Instance.new("Camera")
-viewport.CurrentCamera=camera
-camera.Parent=viewport
-
-local bottomBar=Instance.new("Frame",frame)
-bottomBar.Size=UDim2.new(1,-16,0,24)
-bottomBar.Position=UDim2.new(0,8,1,-30)
-bottomBar.BackgroundTransparency=1
-
-local hpBg=Instance.new("Frame",bottomBar)
-hpBg.Size=UDim2.new(0.45,0,0,8)
-hpBg.Position=UDim2.new(0,0,0.5,-4)
-hpBg.BackgroundColor3=Color3.fromRGB(35,35,42)
-hpBg.BorderSizePixel=0
-local hpCorner=Instance.new("UICorner",hpBg)
-hpCorner.CornerRadius=UDim.new(1,0)
-
-local hpFill=Instance.new("Frame",hpBg)
-hpFill.Size=UDim2.new(1,0,1,0)
-hpFill.BackgroundColor3=Color3.fromRGB(46,204,113)
-hpFill.BorderSizePixel=0
-local hpFillCorner=Instance.new("UICorner",hpFill)
-hpFillCorner.CornerRadius=UDim.new(1,0)
-
-local hpText=Instance.new("TextLabel",bottomBar)
-hpText.Size=UDim2.new(0,60,1,0)
-hpText.Position=UDim2.new(0.45,6,0,0)
-hpText.BackgroundTransparency=1
-hpText.Font=Enum.Font.Gotham
-hpText.Text="100 HP"
-hpText.TextColor3=Color3.fromRGB(200,200,210)
-hpText.TextSize=11
-hpText.TextXAlignment=Enum.TextXAlignment.Left
-
-local resetBtn=Instance.new("TextButton",bottomBar)
-resetBtn.Size=UDim2.new(0,50,0,20)
-resetBtn.Position=UDim2.new(1,-110,0.5,-10)
-resetBtn.BackgroundColor3=Color3.fromRGB(35,35,45)
-resetBtn.Text="Reset"
-resetBtn.TextColor3=Color3.fromRGB(220,220,230)
-resetBtn.Font=Enum.Font.GothamMedium
-resetBtn.TextSize=10
-resetBtn.BorderSizePixel=0
-local rstCorner=Instance.new("UICorner",resetBtn)
-rstCorner.CornerRadius=UDim.new(0,4)
-
-local rotateBtn=Instance.new("TextButton",bottomBar)
-rotateBtn.Size=UDim2.new(0,54,0,20)
-rotateBtn.Position=UDim2.new(1,-54,0.5,-10)
-rotateBtn.BackgroundColor3=autoRotate and Color3.fromRGB(60,50,90) or Color3.fromRGB(35,35,45)
-rotateBtn.Text=autoRotate and "Spin: On" or "Spin: Off"
-rotateBtn.TextColor3=Color3.fromRGB(220,220,230)
-rotateBtn.Font=Enum.Font.GothamMedium
-rotateBtn.TextSize=10
-rotateBtn.BorderSizePixel=0
-local rotCorner=Instance.new("UICorner",rotateBtn)
-rotCorner.CornerRadius=UDim.new(0,4)
-
-local charClone=nil
-local currentAngleY=0
-local currentAngleX=0
-local currentDistance=7.5
-local centerPos=Vector3.new(0,0,0)
-
-local function updateCamera()
-    if not charClone then return end
-    local rotCF=CFrame.Angles(0,currentAngleY,0)*CFrame.Angles(currentAngleX,0,0)
-    local camOffset=rotCF:PointToWorldSpace(Vector3.new(0,0.5,currentDistance))
-    camera.CFrame=CFrame.lookAt(centerPos+camOffset,centerPos+Vector3.new(0,0.2,0))
-end
-
-local function loadCharacter()
-    if charClone then
-        charClone:Destroy()
-        charClone=nil
-    end
-    
-    local player=nil
-    if target=="LocalPlayer" or target==nil then
-        player=game:GetService("Players").LocalPlayer
-    elseif typeof(target)=="Instance" and target:IsA("Player") then
-        player=target
-    elseif typeof(target)=="number" then
-        pcall(function()
-            charClone=game:GetService("Players"):CreateHumanoidModelFromUserId(target)
-        end)
-    end
-    
-    if player and player.Character then
-        local origArch=player.Character.Archivable
-        player.Character.Archivable=true
-        local ok,cl=pcall(function() return player.Character:Clone() end)
-        player.Character.Archivable=origArch
-        if ok and cl then
-            charClone=cl
-        end
-    end
-    
-    if charClone then
-        for _,desc in ipairs(charClone:GetDescendants()) do
-            if desc:IsA("LuaSourceContainer") or desc:IsA("Sound") or desc:IsA("ParticleEmitter") then
-                pcall(function() desc:Destroy() end)
-            elseif desc:IsA("BasePart") then
-                desc.Anchored=true
-                desc.CanCollide=false
-            end
-        end
-        local root=charClone:FindFirstChild("HumanoidRootPart") or charClone:FindFirstChild("Torso") or charClone:FindFirstChild("UpperTorso")
-        if root then
-            centerPos=root.Position
-        else
-            centerPos=charClone:GetPivot().Position
-        end
-        charClone.Parent=worldModel
-        updateCamera()
-    end
-end
-
-loadCharacter()
-
-local player=(target=="LocalPlayer" or target==nil) and game:GetService("Players").LocalPlayer
-local charAddedConn=nil
-if player then
-    charAddedConn=player.CharacterAdded:Connect(function()
-        task.wait(0.5)
-        loadCharacter()
-    end)
-end
-
-local RunService=game:GetService("RunService")
-local updateConn=nil
-local lastRoleUpdate=0
-updateConn=RunService.RenderStepped:Connect(function(dt)
-    if autoRotate then
-        currentAngleY=currentAngleY+math.rad(autoRotateSpeed)*dt
-        updateCamera()
-    end
-    local now=tick()
-    if now-lastRoleUpdate>=0.5 then
-        lastRoleUpdate=now
-        if player and player.Character then
-            local hum=player.Character:FindFirstChildOfClass("Humanoid")
-            if hum and showHealth then
-                local hp=math.clamp(hum.Health,0,hum.MaxHealth)
-                local maxHp=math.max(hum.MaxHealth,1)
-                local ratio=hp/maxHp
-                hpFill.Size=UDim2.new(ratio,0,1,0)
-                hpText.Text=string.format("%d / %d HP",math.floor(hp),math.floor(maxHp))
-                if ratio>0.5 then
-                    hpFill.BackgroundColor3=Color3.fromRGB(46,204,113)
-                elseif ratio>0.25 then
-                    hpFill.BackgroundColor3=Color3.fromRGB(241,196,15)
-                else
-                    hpFill.BackgroundColor3=Color3.fromRGB(231,76,60)
-                end
-            end
-            if showMM2Role then
-                local isMur=false
-                local isSher=false
-                local isHero=false
-                local function checkTool(tool)
-                    if not tool or not tool:IsA("Tool") then return end
-                    local name=tool.Name:lower()
-                    if name=="knife" or tool:FindFirstChild("KnifeHost") or tool:FindFirstChild("KnifeServer") then
-                        isMur=true
-                    elseif name=="gun" or tool:FindFirstChild("GunHost") or tool:FindFirstChild("GunServer") then
-                        if tool:FindFirstChild("Hero") or name:find("hero") then
-                            isHero=true
-                        else
-                            isSher=true
-                        end
-                    end
-                end
-                for _,t in ipairs(player.Character:GetChildren()) do checkTool(t) end
-                if player:FindFirstChild("Backpack") then
-                    for _,t in ipairs(player.Backpack:GetChildren()) do checkTool(t) end
-                end
-                if isMur then
-                    roleBadge.Text="Murderer"
-                    roleBadge.TextColor3=Color3.fromRGB(255,60,60)
-                    roleBadge.BackgroundColor3=Color3.fromRGB(60,20,25)
-                elseif isSher then
-                    roleBadge.Text="Sheriff"
-                    roleBadge.TextColor3=Color3.fromRGB(60,160,255)
-                    roleBadge.BackgroundColor3=Color3.fromRGB(20,40,65)
-                elseif isHero then
-                    roleBadge.Text="Hero"
-                    roleBadge.TextColor3=Color3.fromRGB(255,215,0)
-                    roleBadge.BackgroundColor3=Color3.fromRGB(65,55,20)
-                else
-                    roleBadge.Text="Innocent"
-                    roleBadge.TextColor3=Color3.fromRGB(120,220,120)
-                    roleBadge.BackgroundColor3=Color3.fromRGB(25,45,25)
-                end
-            end
-        end
-    end
-end)
-
-local dragging=false
-local lastMousePos=Vector2.new()
-local UserInputService=game:GetService("UserInputService")
-
-viewport.InputBegan:Connect(function(input)
-    if not interactive then return end
-    if input.UserInputType==Enum.UserInputType.MouseButton1 or input.UserInputType==Enum.UserInputType.Touch then
-        dragging=true
-        lastMousePos=Vector2.new(input.Position.X,input.Position.Y)
-    end
-end)
-
-UserInputService.InputEnded:Connect(function(input)
-    if input.UserInputType==Enum.UserInputType.MouseButton1 or input.UserInputType==Enum.UserInputType.Touch then
-        dragging=false
-    end
-end)
-
-UserInputService.InputChanged:Connect(function(input)
-    if not interactive or not dragging then return end
-    if input.UserInputType==Enum.UserInputType.MouseMovement or input.UserInputType==Enum.UserInputType.Touch then
-        local currentPos=Vector2.new(input.Position.X,input.Position.Y)
-        local delta=currentPos-lastMousePos
-        lastMousePos=currentPos
-        currentAngleY=currentAngleY-delta.X*0.015
-        currentAngleX=math.clamp(currentAngleX+delta.Y*0.015,-math.rad(60),math.rad(60))
-        updateCamera()
-    elseif input.UserInputType==Enum.UserInputType.MouseWheel then
-        currentDistance=math.clamp(currentDistance-input.Position.Z*0.8,3,20)
-        updateCamera()
-    end
-end)
-
-resetBtn.MouseButton1Click:Connect(function()
-    currentAngleY=0
-    currentAngleX=0
-    currentDistance=7.5
-    updateCamera()
-end)
-
-rotateBtn.MouseButton1Click:Connect(function()
-    autoRotate=not autoRotate
-    rotateBtn.Text=autoRotate and "Spin: On" or "Spin: Off"
-    rotateBtn.BackgroundColor3=autoRotate and Color3.fromRGB(60,50,90) or Color3.fromRGB(35,35,45)
-end)
-
-frame.Destroying:Connect(function()
-    if updateConn then updateConn:Disconnect() end
-    if charAddedConn then charAddedConn:Disconnect() end
-    if charClone then charClone:Destroy() end
-end)
-
-local handle={
-    Frame=frame,
-    Viewport=viewport,
-    SetTarget=function(self,newTarget)
-        target=newTarget
-        loadCharacter()
-    end,
-    SetAutoRotate=function(self,enabled)
-        autoRotate=enabled
-        rotateBtn.Text=autoRotate and "Spin: On" or "Spin: Off"
-        rotateBtn.BackgroundColor3=autoRotate and Color3.fromRGB(60,50,90) or Color3.fromRGB(35,35,45)
-    end,
-    Focus=function(self)
-        currentAngleY=0
-        currentAngleX=0
-        currentDistance=7.5
-        updateCamera()
-    end,
-    Refresh=function(self)
-        loadCharacter()
-    end,
-    Destroy=function(self)
-        frame:Destroy()
-    end
-}
-
-return "CharacterPreview",handle
-end
-return al end
-
-function a.MapDuper()
-local al={}
-function al.New(am,an)
-local aa=a.load'd'
-local Window=an.Window
-local WindUI=an.WindUI or aa
-local Tab=an.Tab
-local Parent=an.Parent
-
-local delayOnPad=an.DelayOnPad or 0.38
-local callback=an.Callback or function() end
-local imageHeight=math.clamp(tonumber(an.ImageHeight) or 76, 36, 150)
-local scaleType=an.ScaleType or Enum.ScaleType.Fit
-
-local function applyFont(obj,weight,style)
-    weight=weight or Enum.FontWeight.Medium
-    style=style or Enum.FontStyle.Normal
-    local fontId=aa.Font or (WindUI and WindUI.Font) or "rbxassetid://12187365364"
-    pcall(function()
-        obj.FontFace=Font.new(fontId,weight,style)
-    end)
-    pcall(function()
-        aa.AddFontObject(obj)
-    end)
-end
-
-local isDupeActive=false
-local selectedPadIndex=1
-local selectedPadInstance=nil
-local selectedMapName=""
-local scanLoopActive=true
-local isVotingCurrentlyActive=false
-
-local cardHeight=imageHeight+48
-local totalHeight=48+cardHeight+10
-
-local container=Instance.new("Frame")
-container.Name="MapDuperContainer"
-container.Size=UDim2.new(1,0,0,totalHeight)
-container.BackgroundColor3=Color3.fromRGB(20,18,16)
-container.BorderSizePixel=0
-container.Parent=Parent
-
-local corner=Instance.new("UICorner",container)
-corner.CornerRadius=UDim.new(0,10)
-
-local stroke=Instance.new("UIStroke",container)
-stroke.Color=Color3.fromRGB(45,38,32)
-stroke.Thickness=1
-
-local headerRow=Instance.new("Frame",container)
-headerRow.Size=UDim2.new(1,-20,0,32)
-headerRow.Position=UDim2.new(0,10,0,8)
-headerRow.BackgroundTransparency=1
-
-local statusText=Instance.new("TextLabel",headerRow)
-statusText.Position=UDim2.new(0,0,0,0)
-statusText.Size=UDim2.new(1,-64,1,0)
-statusText.BackgroundTransparency=1
-applyFont(statusText,Enum.FontWeight.SemiBold)
-statusText.Text="Waiting for lobby..."
-statusText.TextColor3=Color3.fromRGB(180,170,160)
-statusText.TextSize=13
-statusText.TextXAlignment=Enum.TextXAlignment.Left
-
-local toggleBtn=Instance.new("TextButton",headerRow)
-toggleBtn.Size=UDim2.new(0,54,0,26)
-toggleBtn.Position=UDim2.new(1,-54,0.5,-13)
-toggleBtn.BackgroundColor3=Color3.fromRGB(40,35,30)
-toggleBtn.Text="OFF"
-toggleBtn.TextColor3=Color3.fromRGB(180,180,180)
-applyFont(toggleBtn,Enum.FontWeight.SemiBold)
-toggleBtn.TextSize=12
-toggleBtn.BorderSizePixel=0
-local tglCorner=Instance.new("UICorner",toggleBtn)
-tglCorner.CornerRadius=UDim.new(0,6)
-local tglStroke=Instance.new("UIStroke",toggleBtn)
-tglStroke.Color=Color3.fromRGB(60,50,42)
-tglStroke.Thickness=1
-
-local cardsFrame=Instance.new("Frame",container)
-cardsFrame.Name="VotePadCards"
-cardsFrame.Size=UDim2.new(1,-20,0,cardHeight)
-cardsFrame.Position=UDim2.new(0,10,0,46)
-cardsFrame.BackgroundTransparency=1
-
-local gridLayout=Instance.new("UIGridLayout",cardsFrame)
-gridLayout.CellPadding=UDim2.new(0,8,0,0)
-gridLayout.CellSize=UDim2.new(0.333,-6,0,cardHeight)
-gridLayout.SortOrder=Enum.SortOrder.LayoutOrder
-
-local padCards={}
-
-local function getAccentColor()
-    if Window and Window.Theme and Window.Theme.Accent then
-        return Window.Theme.Accent
-    end
-    return Color3.fromRGB(224,116,24)
-end
-
-for i=1,3 do
-    local card=Instance.new("TextButton")
-    card.Name="VoteCard"..i
-    card.LayoutOrder=i
-    card.AutoButtonColor=false
-    card.BackgroundColor3=Color3.fromRGB(42,40,40)
-    card.BorderSizePixel=0
-    card.Text=""
-    card.Parent=cardsFrame
-    
-    local cCorner=Instance.new("UICorner",card)
-    cCorner.CornerRadius=UDim.new(0,8)
-    
-    local cStroke=Instance.new("UIStroke",card)
-    cStroke.Color=getAccentColor()
-    cStroke.Thickness=2
-    cStroke.Enabled=(i==selectedPadIndex)
-    
-    local greyBox=Instance.new("Frame",card)
-    greyBox.Name="GreyBox"
-    greyBox.Size=UDim2.new(1,0,1,0)
-    greyBox.BackgroundColor3=Color3.fromRGB(42,40,40)
-    greyBox.BorderSizePixel=0
-    greyBox.ZIndex=2
-    greyBox.Visible=true
-    local gbCorner=Instance.new("UICorner",greyBox)
-    gbCorner.CornerRadius=UDim.new(0,8)
-    
-    local icon=Instance.new("ImageLabel",card)
-    icon.Name="MapIcon"
-    icon.Size=UDim2.new(1,-12,0,imageHeight)
-    icon.Position=UDim2.new(0,6,0,6)
-    icon.BackgroundColor3=Color3.fromRGB(10,9,8)
-    icon.BorderSizePixel=0
-    icon.ScaleType=scaleType
-    icon.ZIndex=3
-    icon.Visible=false
-    local icCorner=Instance.new("UICorner",icon)
-    icCorner.CornerRadius=UDim.new(0,6)
-    
-    local mapLabel=Instance.new("TextLabel",card)
-    mapLabel.Name="MapName"
-    mapLabel.Size=UDim2.new(1,-12,0,20)
-    mapLabel.Position=UDim2.new(0,6,0,imageHeight+6)
-    mapLabel.BackgroundTransparency=1
-    applyFont(mapLabel,Enum.FontWeight.SemiBold)
-    mapLabel.Text="Searching..."
-    mapLabel.TextColor3=Color3.fromRGB(245,242,238)
-    mapLabel.TextSize=11
-    mapLabel.TextTruncate=Enum.TextTruncate.AtEnd
-    mapLabel.ZIndex=3
-    mapLabel.Visible=false
-    
-    local votesLabel=Instance.new("TextLabel",card)
-    votesLabel.Name="Votes"
-    votesLabel.Size=UDim2.new(1,-12,0,18)
-    votesLabel.Position=UDim2.new(0,6,0,imageHeight+26)
-    votesLabel.BackgroundTransparency=1
-    applyFont(votesLabel,Enum.FontWeight.Medium)
-    votesLabel.Text="Votes: --"
-    votesLabel.TextColor3=Color3.fromRGB(190,185,180)
-    votesLabel.TextSize=10
-    votesLabel.TextTruncate=Enum.TextTruncate.AtEnd
-    votesLabel.ZIndex=3
-    votesLabel.Visible=false
-    
-    padCards[i]={
-        Card=card,
-        Stroke=cStroke,
-        GreyBox=greyBox,
-        Icon=icon,
-        Map=mapLabel,
-        Votes=votesLabel,
-        PadInstance=nil
-    }
-    
-    local function selectPad(index)
-        selectedPadIndex=index
-        for idx,cData in ipairs(padCards) do
-            cData.Stroke.Enabled=(idx==selectedPadIndex)
-            cData.Stroke.Color=getAccentColor()
-            if isVotingCurrentlyActive then
-                cData.Card.BackgroundColor3=(idx==selectedPadIndex) and Color3.fromRGB(25,22,18) or Color3.fromRGB(15,13,11)
-            end
-        end
-        selectedPadInstance=padCards[index] and padCards[index].PadInstance
-        selectedMapName=padCards[index] and padCards[index].Map.Text or ""
-        if WindUI and WindUI.Notify then
-            WindUI:Notify({
-                Title="Map Duper",
-                Content="Selected: "..(selectedMapName~="" and selectedMapName or ("Pad "..index)),
-                Duration=2.5
-            })
-        end
-    end
-    
-    local index=i
-    card.MouseButton1Click:Connect(function()
-        selectPad(index)
-    end)
-end
-
-local function updateCardLayout()
-    cardHeight=imageHeight+48
-    totalHeight=48+cardHeight+10
-    
-    container.Size=UDim2.new(1,0,0,totalHeight)
-    cardsFrame.Size=UDim2.new(1,-20,0,cardHeight)
-    gridLayout.CellSize=UDim2.new(0.333,-6,0,cardHeight)
-    
-    for i=1,3 do
-        local cData=padCards[i]
-        if cData then
-            cData.Icon.Size=UDim2.new(1,-12,0,imageHeight)
-            cData.Icon.ScaleType=scaleType
-            cData.Map.Position=UDim2.new(0,6,0,imageHeight+6)
-            cData.Votes.Position=UDim2.new(0,6,0,imageHeight+26)
-            
-            if isVotingCurrentlyActive then
-                cData.GreyBox.Visible=false
-                cData.Icon.Visible=true
-                cData.Map.Visible=true
-                cData.Votes.Visible=true
-                cData.Card.BackgroundColor3=(i==selectedPadIndex) and Color3.fromRGB(25,22,18) or Color3.fromRGB(15,13,11)
-            else
-                cData.GreyBox.Visible=true
-                cData.Icon.Visible=false
-                cData.Map.Visible=false
-                cData.Votes.Visible=false
-                cData.Card.BackgroundColor3=Color3.fromRGB(42,40,40)
-            end
-        end
-    end
-end
-updateCardLayout()
-
-local function findVotePads()
-    local lobby=workspace:FindFirstChild("RegularLobby") or workspace:FindFirstChild("SummerLobby") or workspace:FindFirstChild("Lobby")
-    local pads={}
-    if not lobby then return pads end
-    
-    for i=1,3 do
-        local padName="VotePad"..i
-        local p=lobby:FindFirstChild(padName)
-        if p and p:FindFirstChild("Pad",true) and (p:FindFirstChild("VoteInfoGui",true) or p:FindFirstChild("MapInfoGui",true)) then
-            table.insert(pads,p)
-        end
-    end
-    
-    if #pads==0 then
-        local vpFolder=lobby:FindFirstChild("VotePads")
-        if vpFolder then
-            for _,child in ipairs(vpFolder:GetChildren()) do
-                if child:FindFirstChild("Pad",true) and (child:FindFirstChild("VoteInfoGui",true) or child:FindFirstChild("MapInfoGui",true)) then
-                    table.insert(pads,child)
-                end
-            end
-        end
-    end
-    return pads
-end
-
-local function getGuiText(gui,childName)
-    if not gui then return "" end
-    local target=gui:FindFirstChild(childName,true)
-    if target and (target:IsA("TextLabel") or target:IsA("TextButton") or target:IsA("TextBox")) then
-        return tostring(target.Text or "")
-    end
-    return ""
-end
-
-local function getGuiImage(gui,childName)
-    if not gui then return "" end
-    local target=gui:FindFirstChild(childName,true)
-    if target and target:IsA("ImageLabel") then
-        local img=""
-        pcall(function() img=tostring(target.Image or "") end)
-        return img
-    end
-    return ""
-end
-
-local function isVoteActive(padInst)
-    if not padInst or not padInst.Parent then return false end
-    local voteGui=padInst:FindFirstChild("VoteInfoGui",true)
-    local mapGui=padInst:FindFirstChild("MapInfoGui",true)
-    if not voteGui and not mapGui then return false end
-    
-    local vActive=false
-    if voteGui then
-        if voteGui:IsA("LayerCollector") then
-            vActive=voteGui.Enabled==true
-        elseif voteGui:IsA("GuiObject") then
-            vActive=voteGui.Visible==true
-        else
-            vActive=voteGui.Enabled==true
-        end
-    end
-    if not vActive and mapGui then
-        if mapGui:IsA("LayerCollector") then
-            vActive=mapGui.Enabled==true
-        elseif mapGui:IsA("GuiObject") then
-            vActive=mapGui.Visible==true
-        end
-    end
-    
-    local mapName=getGuiText(padInst,"MapName")
-    local iconImg=getGuiImage(padInst,"MapIcon")
-    if mapName=="" and iconImg=="" then
-        return false
-    end
-    return vActive
-end
-
-task.spawn(function()
-    while scanLoopActive do
-        local pads=findVotePads()
-        local anyVoting=false
-        for i=1,3 do
-            local padInst=pads[i]
-            local cardData=padCards[i]
-            cardData.PadInstance=padInst
-            if padInst then
-                local mapName=getGuiText(padInst,"MapName")
-                local votes=getGuiText(padInst,"Votes")
-                local iconImg=getGuiImage(padInst,"MapIcon")
-                
-                cardData.Map.Text=(mapName~="" and mapName) or ("Pad "..i)
-                cardData.Votes.Text=(votes~="" and votes) or "Votes: --"
-                if iconImg~="" then
-                    cardData.Icon.Image=iconImg
-                end
-                if isVoteActive(padInst) then
-                    anyVoting=true
-                end
-            else
-                cardData.Map.Text="Not in Lobby"
-                cardData.Votes.Text="Votes: --"
-            end
-        end
-        
-        isVotingCurrentlyActive=anyVoting
-        updateCardLayout()
-        
-        if anyVoting then
-            statusText.Text="Voting Active!"
-            statusText.TextColor3=Color3.fromRGB(80,220,100)
-        else
-            if #pads>0 then
-                statusText.Text="Voting Ended"
-                statusText.TextColor3=Color3.fromRGB(220,150,70)
-            else
-                statusText.Text="Waiting for lobby..."
-                statusText.TextColor3=Color3.fromRGB(180,170,160)
-            end
-        end
-        
-        task.wait(0.35)
-    end
-end)
-
-local fallbackCFs={
-    [1]=CFrame.new(-0.187438965,-64.8124008,-96.2501221,-1,0,-0,0,0,-1,0,-1,-0),
-    [2]=CFrame.new(-10.187439,-64.8124008,-95.0001221,0.25886941,-0.965912342,-1.719594e-05,1.719594e-05,2.24113464e-05,-1,0.965912342,0.25886941,2.24113464e-05),
-    [3]=CFrame.new(9.81256104,-64.8124008,-95.0001221,-0.25886941,-0.965912342,1.719594e-05,1.719594e-05,-2.24113464e-05,-1,0.965912342,-0.25886941,2.24113464e-05),
-}
-
-local dupeThread=nil
-local function startDupeLoop()
-    if dupeThread then return end
-    dupeThread=task.spawn(function()
-        local LP=game:GetService("Players").LocalPlayer
-        while isDupeActive do
-            local padInst=padCards[selectedPadIndex] and padCards[selectedPadIndex].PadInstance
-            if padInst and not isVoteActive(padInst) then
-                task.wait(0.4)
-                continue
-            end
-            
-            local character=LP.Character
-            if not character then
-                task.wait(0.15)
-                continue
-            end
-            
-            local hum=character:FindFirstChildOfClass("Humanoid")
-            local hrp=character:FindFirstChild("HumanoidRootPart")
-            local padPart=(padInst and (padInst:FindFirstChild("Pad",true) or padInst:FindFirstChildWhichIsA("BasePart")))
-            local targetCF=(padPart and padPart.CFrame) or fallbackCFs[selectedPadIndex]
-            
-            if hum and hrp and targetCF and hum.Health>0 then
-                if not pcall(function()
-                    character:PivotTo(targetCF*CFrame.new(0,1.5,0))
-                end) then
-                    hrp.CFrame=targetCF*CFrame.new(0,1.5,0)
-                end
-                
-                task.wait(delayOnPad)
-                
-                if isDupeActive and hum.Health>0 and (not padInst or isVoteActive(padInst)) then
-                    hum.Health=0
-                    character:BreakJoints()
-                    local waitStart=tick()
-                    while isDupeActive and tick()-waitStart<6 do
-                        task.wait(0.08)
-                        local cur=LP.Character
-                        if cur and cur~=character and cur:FindFirstChild("HumanoidRootPart") then
-                            local h=cur:FindFirstChildOfClass("Humanoid")
-                            if h and h.Health>0 then break end
-                        end
-                    end
-                    task.wait(0.05)
-                end
-            else
-                task.wait(0.2)
-            end
-        end
-        dupeThread=nil
-    end)
-end
-
-local function stopDupeLoop()
-    isDupeActive=false
-    if dupeThread then
-        pcall(task.cancel,dupeThread)
-        dupeThread=nil
-    end
-end
-
-local function setDupeState(state)
-    if state == nil then
-        isDupeActive = not isDupeActive
-    else
-        if isDupeActive == state then return end
-        isDupeActive = state
-    end
-    if isDupeActive then
-        toggleBtn.Text="ON"
-        toggleBtn.BackgroundColor3=getAccentColor()
-        toggleBtn.TextColor3=Color3.fromRGB(255,255,255)
-        startDupeLoop()
-        if WindUI and WindUI.Notify then
-            WindUI:Notify({
-                Title="Map Duper",
-                Content="Map Duper Enabled! Standing on pad & resetting to dupe votes.",
-                Duration=3
-            })
-        end
-    else
-        toggleBtn.Text="OFF"
-        toggleBtn.BackgroundColor3=Color3.fromRGB(40,35,30)
-        toggleBtn.TextColor3=Color3.fromRGB(180,180,180)
-        stopDupeLoop()
-        if WindUI and WindUI.Notify then
-            WindUI:Notify({
-                Title="Map Duper",
-                Content="Map Duper Disabled.",
-                Duration=2
-            })
-        end
-    end
-    pcall(callback,isDupeActive)
-end
-
-toggleBtn.MouseButton1Click:Connect(function()
-    setDupeState()
-end)
-
-container.Destroying:Connect(function()
-    scanLoopActive=false
-    stopDupeLoop()
-end)
-
-local handle={
-    Container=container,
-    SetEnabled=function(self,state)
-        setDupeState(state)
-    end,
-    SetDelay=function(self,newDelay)
-        delayOnPad=math.clamp(newDelay,0.1,5)
-    end,
-    SelectPad=function(self,padIdx)
-        if padCards[padIdx] then
-            selectPad(padIdx)
-        end
-    end,
-    GetSelectedPad=function(self)
-        return selectedPadIndex,selectedMapName
-    end,
-    SetImageHeight=function(self,newH)
-        imageHeight=math.clamp(tonumber(newH) or 76, 36, 150)
-        updateCardLayout()
-    end,
-    SetImageScaleType=function(self,newScale)
-        if typeof(newScale)=="EnumItem" then
-            scaleType=newScale
-        elseif newScale=="Fit" or string.find(tostring(newScale), "Fit") then
-            scaleType=Enum.ScaleType.Fit
-        elseif newScale=="Crop" or string.find(tostring(newScale), "Crop") then
-            scaleType=Enum.ScaleType.Crop
-        elseif newScale=="Stretch" or string.find(tostring(newScale), "Stretch") then
-            scaleType=Enum.ScaleType.Stretch
-        end
-        updateCardLayout()
-    end,
-    Destroy=function(self)
-        container:Destroy()
-    end
-}
-
-return "MapDuper",handle
-end
-return al end
-
-function a._()
+return al end function a._()
 
 return{
 Elements={
@@ -12516,10 +11479,7 @@ Group=a.load'W',
 HStack=a.load'X',
 VStack=a.load'Y',
 Viewport=a.load'Z',
-CharacterPreview=a.load'CharacterPreview',
-MapDuper=a.load'MapDuper',
-AddCharacterPreview=a.load'CharacterPreview',
-AddMapDuper=a.load'MapDuper',
+
 },
 Load=function(aa,af,ai,ak,al,am,an,ao,ap)
 for aq,ar in next,ai do
@@ -12730,7 +11690,6 @@ ar.TabPaddingX=2+(Window.UIPadding/4)
 ar.TabPaddingY=2+(Window.UIPadding/4)
 ar.TitlePaddingY=2+(Window.UIPadding/4)
 end
-ar.IconOnly=(ap.IconOnly==true) or (Window and Window.IconOnlyTabs==true) or false
 
 ao.TabCount=ao.TabCount+1
 
@@ -12801,7 +11760,6 @@ AutomaticSize="Y",
 LayoutOrder=2,
 TextXAlignment="Left",
 BackgroundTransparency=1,
-Visible=not ar.IconOnly,
 },{
 al("UIPadding",{
 PaddingTop=UDim.new(0,ar.TitlePaddingY),
@@ -13022,13 +11980,13 @@ local ay
 local az=false
 
 
-if ar.Desc or ar.IconOnly then
+if ar.Desc then
 ak.AddSignal(ar.UIElements.Main.InputBegan,function()
 az=true
 ax=task.spawn(function()
-task.wait(0.2)
+task.wait(0.35)
 if az and not aw then
-aw=am(ar.Desc or ar.Title,ao.ToolTipParent,true)
+aw=am(ar.Desc,ao.ToolTipParent,true)
 aw.Container.AnchorPoint=Vector2.new(0.5,0.5)
 
 local function updatePosition()
@@ -13076,21 +12034,6 @@ ImageTransparency="TabBorderTransparency",
 },0.1)
 end
 end)
-
-function ar.SetIconOnly(aB,aC)
-ar.IconOnly=aC
-pcall(function()
-if ar.UIElements and ar.UIElements.Main and ar.UIElements.Main.Frame then
-if ar.UIElements.Main.Frame:FindFirstChild("TextLabel") then
-ar.UIElements.Main.Frame.TextLabel.Visible=not aC
-end
-if ar.UIElements.Main.Frame:FindFirstChild("UIListLayout") then
-ar.UIElements.Main.Frame.UIListLayout.HorizontalAlignment=aC and Enum.HorizontalAlignment.Center or Enum.HorizontalAlignment.Left
-end
-end
-ar.UIElements.Main.Size=aC and UDim2.new(1,-7,0,36) or UDim2.new(1,-7,0,0)
-end)
-end
 
 function ar.ScrollToTheElement(aA,aB)
 ar.UIElements.ContainerFrame.ScrollingEnabled=false
@@ -14041,7 +12984,1702 @@ end)
 return ap
 end
 
-return af end function a.ae()
+return af end
+
+function a.af()
+        -- =========================================================================
+        --  WindUI Music Player
+        --  Beautiful & smooth floating audio player widget.
+        --
+        --  Usage:
+        --      local Player = WindUI:Player{
+        --          Position = UDim2.new(0, 24, 1, -24),
+        --          Volume = 0.8,
+        --          AutoPlay = true,
+        --          Tracks = {
+        --              { Title = "Song", Author = "Artist", Source = "https://.../song.mp3" },
+        --          },
+        --      }
+        --
+        --  Track.Source accepts: http(s) URL, "rbxassetid://ID", or a local file path.
+        --  Track.Icon (optional) accepts: http(s) URL or "rbxassetid://ID".
+        -- =========================================================================
+
+        local Creator=a.load'd'
+
+        local New=Creator.New
+        local Tween=Creator.Tween
+        local NewRoundFrame=Creator.NewRoundFrame
+        local AddThemeObject=Creator.AddThemeObject
+        local AddSignal=Creator.AddSignal
+        local GetTheme=Creator.GetThemeProperty
+        local Font_=Creator.Font
+
+        local cloneref_=cloneref or clonereference or function(x)
+                return x
+        end
+
+        local RunService=cloneref_(game:GetService"RunService")
+        local SoundService=cloneref_(game:GetService"SoundService")
+        local UserInputService=cloneref_(game:GetService"UserInputService")
+        local HttpService=cloneref_(game:GetService"HttpService")
+
+        local PlayerModule={}
+
+        -- Demo tracks (WindyFork examples). Both URLs contain audio data
+        -- (MP3 / Ogg Vorbis) despite their disguised file extensions.
+        local DEFAULT_TRACKS={
+                {
+                        Title="Obidin",
+                        Author="WindyFork",
+                        Source="https://github.com/mafiabomma67-beep/WindyFork/raw/refs/heads/main/include/obidin.bin",
+                },
+                {
+                        Title="Origin",
+                        Author="WindyFork",
+                        Source="https://raw.githubusercontent.com/mafiabomma67-beep/WindyFork/refs/heads/main/GUI/origin.png",
+                },
+        }
+
+        -- ---------------------------------------------------------------------
+        --  Helpers
+        -- ---------------------------------------------------------------------
+
+        local function FormatTime(x)
+                x=math.max(0,math.floor(x+0.5))
+                return string.format("%d:%02d",math.floor(x/60),x%60)
+        end
+
+        local function GetIcon(name)
+                local ok,result=pcall(function()
+                        return Creator.Icon(name)
+                end)
+                if ok and type(result)=="table" then
+                        return result[1],result[2]
+                end
+                return nil,nil
+        end
+
+        local function SafeGet(url)
+                local ok,result=pcall(function()
+                        if game and game.HttpGet then
+                                return game:HttpGet(url)
+                        end
+                        if Creator.Request then
+                                return Creator.Request{Url=url,Method="GET"}.Body
+                        end
+                        return HttpService:GetAsync(url)
+                end)
+                if ok then
+                        return result
+                end
+                return nil
+        end
+
+        -- Detects the real audio container by magic bytes (URLs may be disguised)
+        local function AudioExtension(body)
+                if type(body)~="string" or #body<4 then
+                        return ".mp3"
+                end
+                local a,b,c,d=string.byte(body,1,4)
+                if body:sub(1,4)=="OggS" then
+                        return ".ogg"
+                elseif body:sub(1,4)=="RIFF" then
+                        return ".wav"
+                elseif body:sub(1,3)=="ID3" then
+                        return ".mp3"
+                elseif a==0xFF and b and bit32.band(b,0xE0)==0xE0 then
+                        return ".mp3"
+                end
+                return ".mp3"
+        end
+
+        -- Resolves a track source into a playable SoundId
+        local function ResolveSource(source)
+                if typeof(source)=="number" then
+                        return true,"rbxassetid://"..tostring(source)
+                end
+                if type(source)~="string" or #source==0 then
+                        return nil,"Invalid source"
+                end
+                if source:sub(1,13)=="rbxassetid://" or source:sub(1,11)=="rbxasset://" then
+                        return true,source
+                end
+                if isfile and getcustomasset and isfile(source) then
+                        local ok,asset=pcall(getcustomasset,source)
+                        if ok then
+                                return true,asset
+                        end
+                end
+                if not (string.find(source,"http")=="1" or string.find(source,"http",1,true)==1) then
+                        return nil,"Unsupported source: "..source
+                end
+                if not writefile or not getcustomasset then
+                        return nil,"Executor has no writefile/getcustomasset support"
+                end
+
+                local body=SafeGet(source)
+                if not body then
+                        return nil,"Failed to download: "..source
+                end
+
+                local ext=AudioExtension(body)
+                local folder=(Creator.Folder or"WindUI").."/Player/assets"
+                local path=folder.."/."..Creator.SanitizeFilename(source)..ext
+
+                local ok,err=pcall(function()
+                        writefile(path,body)
+                end)
+                if not ok then
+                        return nil,"writefile failed: "..tostring(err)
+                end
+
+                local ok2,asset2=pcall(getcustomasset,path)
+                if not ok2 then
+                        return nil,"getcustomasset failed: "..tostring(asset2)
+                end
+                return true,asset2
+        end
+
+        -- Resolves a cover image URL into an Image id (or returns rbxasset ids as-is)
+        local function ResolveImage(source)
+                if type(source)~="string" or #source==0 then
+                        return nil
+                end
+                if source:sub(1,13)=="rbxassetid://" or source:sub(1,11)=="rbxasset://" then
+                        return source
+                end
+                if string.find(source,"http",1,true)~=1 then
+                        return nil
+                end
+                if not writefile or not getcustomasset then
+                        return nil
+                end
+                local body=SafeGet(source)
+                if not body then
+                        return nil
+                end
+                local path=(Creator.Folder or"WindUI").."/Player/assets/."..Creator.SanitizeFilename(source)..".png"
+                pcall(function()
+                        writefile(path,body)
+                end)
+                local ok,asset=pcall(getcustomasset,path)
+                if ok then
+                        return asset
+                end
+                return nil
+        end
+
+        -- Small icon ImageLabel from the lucide icon pack
+        local function IconImage(name,size,transparency,themeKey,color)
+                local image,rect=GetIcon(name)
+                local props={
+                        Image=image,
+                        Size=UDim2.new(0,size,0,size),
+                        AnchorPoint=Vector2.new(0.5,0.5),
+                        Position=UDim2.new(0.5,0,0.5,0),
+                        BackgroundTransparency=1,
+                        ImageTransparency=transparency or 0,
+                }
+                if rect then
+                        props.ImageRectSize=rect.ImageRectSize
+                        props.ImageRectOffset=rect.ImageRectPosition
+                end
+                if themeKey then
+                        props.ThemeTag={ImageColor3=themeKey}
+                elseif color then
+                        props.ImageColor3=color
+                end
+                return New("ImageLabel",props)
+        end
+
+        -- ---------------------------------------------------------------------
+        --  Slider factory (used for seek bar & volume)
+        -- ---------------------------------------------------------------------
+
+        local function MakeSlider(parent,order,width,height,thumbSize,fillKey,globalConns)
+                local slider={
+                        Ratio=0,
+                        Hovering=false,
+                        Dragging=false,
+                }
+
+                local track=NewRoundFrame(99,"Squircle",{
+                        Size=UDim2.new(0,width,0,height),
+                        AnchorPoint=Vector2.new(0.5,0.5),
+                        Position=UDim2.new(0.5,0,0.5,0),
+                        BackgroundTransparency=1,
+                        ImageTransparency=0.9,
+                        ThemeTag={ImageColor3="Text"},
+                        LayoutOrder=order,
+                        Parent=parent,
+                        Name="SliderTrack",
+                })
+
+                local fill=NewRoundFrame(99,"Squircle",{
+                        Size=UDim2.new(0,0,1,0),
+                        BackgroundTransparency=1,
+                        ImageTransparency=0.05,
+                        ThemeTag={ImageColor3=fillKey or"Primary"},
+                        Name="Fill",
+                        Parent=track,
+                })
+
+                local thumb=NewRoundFrame(999,"Squircle",{
+                        Size=UDim2.new(0,thumbSize,0,thumbSize),
+                        AnchorPoint=Vector2.new(0.5,0.5),
+                        Position=UDim2.new(1,0,0.5,0),
+                        BackgroundTransparency=1,
+                        ImageColor3=Color3.new(1,1,1),
+                        ImageTransparency=0,
+                        Name="Thumb",
+                        Parent=fill,
+                },{
+                        NewRoundFrame(999,"SquircleGlass",{
+                                Size=UDim2.new(1,0,1,0),
+                                ImageColor3=Color3.new(1,1,1),
+                                ImageTransparency=0.55,
+                        }),
+                })
+
+                local thumbScale=New("UIScale",{Scale=0,Parent=thumb})
+
+                slider.Track=track
+                slider.Fill=fill
+
+                function slider.Set(ratio)
+                        ratio=math.clamp(ratio,0,1)
+                        slider.Ratio=ratio
+                        fill.Size=UDim2.new(ratio,0,1,0)
+                end
+
+                local function PointToRatio(input)
+                        local posX=input.Position.X
+                        local abs=track.AbsolutePosition.X
+                        local size=track.AbsoluteSize.X
+                        if size<=0 then
+                                return 0
+                        end
+                        return math.clamp((posX-abs)/size,0,1)
+                end
+
+                local function BeginDrag(input)
+                        slider.Dragging=true
+                        Tween(thumbScale,0.18,{Scale=1.15},Enum.EasingStyle.Back,Enum.EasingDirection.Out):Play()
+                        local ratio=PointToRatio(input)
+                        slider.Set(ratio)
+                        if slider.OnChanged then
+                                slider.OnChanged(ratio,true)
+                        end
+                        if slider.OnStarted then
+                                slider.OnStarted()
+                        end
+                end
+
+                AddSignal(track.InputBegan,function(input)
+                        if input.UserInputType==Enum.UserInputType.MouseButton1 or input.UserInputType==Enum.UserInputType.Touch then
+                                BeginDrag(input)
+                        end
+                end)
+                AddSignal(track.InputChanged,function(input)
+                        if slider.Dragging and(input.UserInputType==Enum.UserInputType.MouseMovement or input.UserInputType==Enum.UserInputType.Touch)then
+                                local ratio=PointToRatio(input)
+                                slider.Set(ratio)
+                                if slider.OnChanged then
+                                        slider.OnChanged(ratio,true)
+                                end
+                        end
+                end)
+                AddSignal(track.InputEnded,function(input)
+                        if(input.UserInputType==Enum.UserInputType.MouseButton1 or input.UserInputType==Enum.UserInputType.Touch)and slider.Dragging then
+                                slider.Dragging=false
+                                Tween(thumbScale,0.18,{Scale=slider.Hovering and 1 or 0},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+                                if slider.OnEnded then
+                                        slider.OnEnded(slider.Ratio)
+                                end
+                        end
+                end)
+
+                -- Release outside the bar must still end the drag
+                if globalConns then
+                        table.insert(globalConns,UserInputService.InputEnded:Connect(function(input)
+                                if(input.UserInputType==Enum.UserInputType.MouseButton1 or input.UserInputType==Enum.UserInputType.Touch)and slider.Dragging then
+                                        slider.Dragging=false
+                                        Tween(thumbScale,0.18,{Scale=slider.Hovering and 1 or 0},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+                                        if slider.OnEnded then
+                                                slider.OnEnded(slider.Ratio)
+                                        end
+                                end
+                        end))
+                end
+
+                AddSignal(track.MouseEnter,function()
+                        slider.Hovering=true
+                        Tween(thumbScale,0.18,{Scale=1},Enum.EasingStyle.Back,Enum.EasingDirection.Out):Play()
+                        Tween(track,0.18,{Size=UDim2.new(0,width,0,height+2)},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+                end)
+                AddSignal(track.MouseLeave,function()
+                        slider.Hovering=false
+                        if not slider.Dragging then
+                                Tween(thumbScale,0.18,{Scale=0},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+                                Tween(track,0.18,{Size=UDim2.new(0,width,0,height)},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+                        end
+                end)
+
+                return slider,track
+        end
+
+        -- ---------------------------------------------------------------------
+        --  Player instance
+        -- ---------------------------------------------------------------------
+
+        function PlayerModule.New(config)
+                config=config or{}
+
+                local self={
+                        Tracks=config.Tracks or DEFAULT_TRACKS,
+                        Index=0,
+                        Volume=math.clamp(config.Volume or 1,0,1),
+                        LastVolume=(config.Volume or 1),
+                        AutoPlay=config.AutoPlay~=false,
+                        LoopMode=config.Loop or"off",-- "off" | "all" | "one"
+                        Shuffle=config.Shuffle==true,
+                        Playing=false,
+                        Loading=false,
+                        Expanded=false,
+                        Minimized=false,
+                        DraggingSeek=false,
+                        Destroyed=false,
+                        UIElements={},
+                        Rows={},
+                        GlobalConns={},
+                        SpinAngle=0,
+                        SpinSpeed=0,
+                        EqClock=0,
+                }
+
+                local WindUI=config.WindUI
+                local CardWidth=340
+                local CardHeight=470
+                local CardHeightExpanded=650
+
+                -- -------------------------------------------------------------
+                --  Sound object
+                -- -------------------------------------------------------------
+
+                local sound=New("Sound",{
+                        Name="WindUI/Player",
+                        Volume=self.Volume,
+                        Parent=SoundService,
+                })
+                self.Sound=sound
+
+                -- -------------------------------------------------------------
+                --  Root & card
+                -- -------------------------------------------------------------
+
+                local root=New("Frame",{
+                        Name="WindUIPlayer",
+                        BackgroundTransparency=1,
+                        Size=UDim2.new(0,CardWidth,0,CardHeight),
+                        Position=config.Position or UDim2.new(0,24,1,-24),
+                        AnchorPoint=Vector2.new(0,1),
+                        Parent=(WindUI and WindUI.ScreenGui)or game:GetService("CoreGui"),
+                        ZIndex=100000,
+                })
+                self.Root=root
+
+                -- soft drop shadow (same asset the Popups use)
+                New("ImageLabel",{
+                        Name="Shadow",
+                        Image="rbxassetid://8992230677",
+                        ImageColor3=Color3.new(0,0,0),
+                        ImageTransparency=0.45,
+                        BackgroundTransparency=1,
+                        Size=UDim2.new(1,120,1,120),
+                        Position=UDim2.new(0,-60,0,-60),
+                        ScaleType="Slice",
+                        SliceCenter=Rect.new(99,99,99,99),
+                        ZIndex=-1,
+                        Parent=root,
+                })
+
+                local card=NewRoundFrame(28,"Squircle",{
+                        Name="Card",
+                        Size=UDim2.new(1,0,1,0),
+                        ImageTransparency=0.02,
+                        ClipsDescendants=true,
+                        ThemeTag={ImageColor3="Notification"},
+                        ZIndex=100001,
+                        Parent=root,
+                })
+                self.Card=card
+
+                local cardScale=New("UIScale",{Scale=1,Parent=card})
+
+                -- -------------------------------------------------------------
+                --  Header
+                -- -------------------------------------------------------------
+
+                local header=New("Frame",{
+                        Name="Header",
+                        BackgroundTransparency=1,
+                        Size=UDim2.new(1,-40,0,28),
+                        Position=UDim2.new(0,20,0,18),
+                        ZIndex=100002,
+                        Parent=card,
+                })
+
+                local caption=New("TextLabel",{
+                        BackgroundTransparency=1,
+                        Size=UDim2.new(0,200,1,0),
+                        TextXAlignment="Left",
+                        Text=config.Title or"Now Playing",
+                        TextSize=12,
+                        FontFace=Font.new(Font_,Enum.FontWeight.SemiBold),
+                        ThemeTag={TextColor3="Placeholder"},
+                        TextTransparency=0.25,
+                        Parent=header,
+                })
+
+                local function HeaderButton(iconName,order,tooltip)
+                        local btn=New("TextButton",{
+                                BackgroundTransparency=1,
+                                Size=UDim2.new(0,26,0,26),
+                                Text="",
+                                ZIndex=100003,
+                                LayoutOrder=order,
+                                Parent=header,
+                        },{
+                                IconImage(iconName,16,0.45),
+                        })
+                        local icon=btn:FindFirstChildOfClass"ImageLabel"
+                        local scale=New("UIScale",{Scale=1,Parent=btn})
+                        AddThemeObject(icon,{ImageColor3="Text"})
+                        btn.MouseEnter:Connect(function()
+                                Tween(icon,0.15,{ImageTransparency=0},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+                                Tween(scale,0.15,{Scale=1.08},Enum.EasingStyle.Back,Enum.EasingDirection.Out):Play()
+                        end)
+                        btn.MouseLeave:Connect(function()
+                                Tween(icon,0.15,{ImageTransparency=0.45},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+                                Tween(scale,0.15,{Scale=1},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+                        end)
+                        return btn
+                end
+
+                New("UIListLayout",{
+                        FillDirection="Horizontal",
+                        HorizontalAlignment="Right",
+                        VerticalAlignment="Center",
+                        Padding=UDim.new(0,2),
+                        Parent=header,
+                })
+
+                local playlistBtn=HeaderButton("list",1)
+                local minimizeBtn=HeaderButton("chevron-down",2)
+                local closeBtn=HeaderButton("x",3)
+
+                -- dedicated invisible drag strip + draggable caption zone
+                local dragStrip=New("Frame",{
+                        Name="DragStrip",
+                        BackgroundTransparency=1,
+                        Size=UDim2.new(1,0,0,18),
+                        Position=UDim2.new(0,0,0,0),
+                        ZIndex=100002,
+                        Parent=card,
+                })
+
+                -- -------------------------------------------------------------
+                --  Cover / vinyl zone
+                -- -------------------------------------------------------------
+
+                local coverZone=New("Frame",{
+                        Name="CoverZone",
+                        BackgroundTransparency=1,
+                        Size=UDim2.new(1,0,0,190),
+                        Position=UDim2.new(0,0,0,62),
+                        ZIndex=100002,
+                        Parent=card,
+                })
+
+                -- ambient glow (pulses while playing)
+                local glow=NewRoundFrame(999,"Circle",{
+                        Name="Glow",
+                        Size=UDim2.new(0,180,0,180),
+                        AnchorPoint=Vector2.new(0.5,0.5),
+                        Position=UDim2.new(0.5,0,0.5,0),
+                        ImageTransparency=0.9,
+                        ThemeTag={ImageColor3="Primary"},
+                        ZIndex=100002,
+                        Parent=coverZone,
+                })
+
+                -- vinyl disc (rotates while playing)
+                local disc=New("Frame",{
+                        Name="Disc",
+                        BackgroundTransparency=1,
+                        Size=UDim2.new(0,170,0,170),
+                        AnchorPoint=Vector2.new(0.5,0.5),
+                        Position=UDim2.new(0.5,0,0.5,0),
+                        ZIndex=100003,
+                        Parent=coverZone,
+                })
+
+                NewRoundFrame(999,"Circle",{
+                        Name="VinylBase",
+                        Size=UDim2.new(1,0,1,0),
+                        ImageTransparency=0,
+                        ThemeTag={ImageColor3="ElementBackground"},
+                        Parent=disc,
+                })
+                for _,radius in next,{136,104} do
+                        NewRoundFrame(999,"Circle",{
+                                Name="Groove",
+                                Size=UDim2.new(0,radius,0,radius),
+                                AnchorPoint=Vector2.new(0.5,0.5),
+                                Position=UDim2.new(0.5,0,0.5,0),
+                                ImageColor3=Color3.new(1,1,1),
+                                ImageTransparency=0.93,
+                                Parent=disc,
+                        })
+                end
+                local label=NewRoundFrame(999,"Circle",{
+                        Name="Label",
+                        Size=UDim2.new(0,54,0,54),
+                        AnchorPoint=Vector2.new(0.5,0.5),
+                        Position=UDim2.new(0.5,0,0.5,0),
+                        ImageTransparency=0.05,
+                        ThemeTag={ImageColor3="Primary"},
+                        Parent=disc,
+                })
+                IconImage("music",22,0.1,nil,Color3.new(1,1,1)).Parent=label
+
+                -- gloss overlay
+                NewRoundFrame(999,"Circle",{
+                        Name="Gloss",
+                        Size=UDim2.new(0,170,0,170),
+                        ImageColor3=Color3.new(1,1,1),
+                        ImageTransparency=0.96,
+                        Parent=disc,
+                })
+
+                -- square cover art (shown when the track has an Icon)
+                local coverBtn=New("TextButton",{
+                        Name="Cover",
+                        BackgroundTransparency=1,
+                        Size=UDim2.new(0,160,0,160),
+                        AnchorPoint=Vector2.new(0.5,0.5),
+                        Position=UDim2.new(0.5,0,0.5,0),
+                        Text="",
+                        Visible=false,
+                        ZIndex=100003,
+                        Parent=coverZone,
+                })
+                local coverImage=New("ImageLabel",{
+                        Name="Image",
+                        BackgroundTransparency=1,
+                        Size=UDim2.new(1,0,1,0),
+                        ScaleType="Crop",
+                        ImageTransparency=0,
+                        Parent=coverBtn,
+                })
+                New("UICorner",{CornerRadius=UDim.new(0,22),Parent=coverImage})
+                local coverScale=New("UIScale",{Scale=1,Parent=coverBtn})
+
+                -- loading spinner
+                local loader=IconImage("loader-circle",26,0.2,nil,Color3.new(1,1,1))
+                loader.Name="Loader"
+                loader.ZIndex=100006
+                loader.Visible=false
+                loader.Parent=coverZone
+                AddThemeObject(loader,{ImageColor3="Text"})
+
+                -- -------------------------------------------------------------
+                --  Title / author / equalizer
+                -- -------------------------------------------------------------
+
+                local titleBlock=New("Frame",{
+                        Name="TitleBlock",
+                        BackgroundTransparency=1,
+                        Size=UDim2.new(1,-40,0,58),
+                        Position=UDim2.new(0,20,0,258),
+                        ZIndex=100002,
+                        Parent=card,
+                })
+
+                local title=New("TextLabel",{
+                        Name="Title",
+                        BackgroundTransparency=1,
+                        Size=UDim2.new(1,0,0,24),
+                        Text="—",
+                        TextSize=18,
+                        TextXAlignment="Center",
+                        TextTruncate="AtEnd",
+                        FontFace=Font.new(Font_,Enum.FontWeight.SemiBold),
+                        ThemeTag={TextColor3="Text"},
+                        Parent=titleBlock,
+                })
+
+                local author=New("TextLabel",{
+                        Name="Author",
+                        BackgroundTransparency=1,
+                        Size=UDim2.new(1,0,0,16),
+                        Position=UDim2.new(0,0,0,25),
+                        Text="",
+                        TextSize=13,
+                        TextXAlignment="Center",
+                        TextTruncate="AtEnd",
+                        FontFace=Font.new(Font_,Enum.FontWeight.Medium),
+                        ThemeTag={TextColor3="Placeholder"},
+                        Parent=titleBlock,
+                })
+
+                -- little equalizer under the title (animates while playing)
+                local eq=New("Frame",{
+                        Name="Equalizer",
+                        BackgroundTransparency=1,
+                        Size=UDim2.new(0,34,0,14),
+                        AnchorPoint=Vector2.new(0.5,0.5),
+                        Position=UDim2.new(0.5,0,1,-2),
+                        ZIndex=100002,
+                        Parent=titleBlock,
+                })
+                local eqBars={}
+                for i=1,4 do
+                        eqBars[i]=NewRoundFrame(99,"Squircle",{
+                                Size=UDim2.new(0,3,0,4),
+                                AnchorPoint=Vector2.new(0.5,1),
+                                Position=UDim2.new((i-0.5)/4,0,1,0),
+                                ImageTransparency=0.25,
+                                ThemeTag={ImageColor3="Primary"},
+                                Parent=eq,
+                        })
+                end
+
+                self.UIElements.Title=title
+                self.UIElements.Author=author
+                self.UIElements.Equalizer=eq
+                self.UIElements.EqBars=eqBars
+                self.UIElements.Disc=disc
+                self.UIElements.Cover=coverBtn
+                self.UIElements.CoverImage=coverImage
+                self.UIElements.Glow=glow
+                self.UIElements.Loader=loader
+
+                -- -------------------------------------------------------------
+                --  Progress bar
+                -- -------------------------------------------------------------
+
+                local progressFrame=New("Frame",{
+                        Name="Progress",
+                        BackgroundTransparency=1,
+                        Size=UDim2.new(1,-40,0,26),
+                        Position=UDim2.new(0,20,0,322),
+                        ZIndex=100002,
+                        Parent=card,
+                })
+
+                local seekSlider,seekTrack=MakeSlider(progressFrame,1,300,5,13,"Primary",self.GlobalConns)
+
+                local times=New("Frame",{
+                        BackgroundTransparency=1,
+                        Size=UDim2.new(1,0,0,14),
+                        Position=UDim2.new(0,0,0,28),
+                        Parent=progressFrame,
+                })
+                local timeCurrent=New("TextLabel",{
+                        BackgroundTransparency=1,
+                        Size=UDim2.new(0.5,0,1,0),
+                        TextXAlignment="Left",
+                        Text="0:00",
+                        TextSize=11,
+                        FontFace=Font.new(Font_,Enum.FontWeight.Medium),
+                        ThemeTag={TextColor3="Placeholder"},
+                        Parent=times,
+                })
+                local timeTotal=New("TextLabel",{
+                        BackgroundTransparency=1,
+                        Size=UDim2.new(0.5,0,1,0),
+                        TextXAlignment="Right",
+                        Text="0:00",
+                        TextSize=11,
+                        FontFace=Font.new(Font_,Enum.FontWeight.Medium),
+                        ThemeTag={TextColor3="Placeholder"},
+                        Parent=times,
+                })
+
+                seekSlider.OnStarted=function()
+                        self.DraggingSeek=true
+                end
+                seekSlider.OnChanged=function(ratio)
+                        local len=sound.TimeLength or 0
+                        if len>0 then
+                                timeCurrent.Text=FormatTime(ratio*len)
+                        end
+                end
+                seekSlider.OnEnded=function(ratio)
+                        self.DraggingSeek=false
+                        local len=sound.TimeLength or 0
+                        if len>0 then
+                                sound.TimePosition=ratio*len
+                        end
+                end
+
+                -- -------------------------------------------------------------
+                --  Transport controls
+                -- -------------------------------------------------------------
+
+                local controls=New("Frame",{
+                        Name="Controls",
+                        BackgroundTransparency=1,
+                        Size=UDim2.new(1,-40,0,58),
+                        Position=UDim2.new(0,20,0,362),
+                        ZIndex=100002,
+                        Parent=card,
+                })
+
+                local function ControlButton(iconName,size,iconSize,order,transparency)
+                        local btn=New("TextButton",{
+                                BackgroundTransparency=1,
+                                Size=UDim2.new(0,size,0,size),
+                                Text="",
+                                LayoutOrder=order,
+                                ZIndex=100003,
+                                Parent=controls,
+                        })
+                        local icon=IconImage(iconName,iconSize,transparency or 0.45)
+                        icon.Parent=btn
+                        AddThemeObject(icon,{ImageColor3="Text"})
+                        local scale=New("UIScale",{Scale=1,Parent=btn})
+                        btn.MouseEnter:Connect(function()
+                                Tween(icon,0.15,{ImageTransparency=0},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+                                Tween(scale,0.15,{Scale=1.12},Enum.EasingStyle.Back,Enum.EasingDirection.Out):Play()
+                        end)
+                        btn.MouseLeave:Connect(function()
+                                Tween(icon,0.15,{ImageTransparency=transparency or 0.45},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+                                Tween(scale,0.15,{Scale=1},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+                        end)
+                        return btn,icon
+                end
+
+                New("UIListLayout",{
+                        FillDirection="Horizontal",
+                        HorizontalAlignment="Center",
+                        VerticalAlignment="Center",
+                        Padding=UDim.new(0,14),
+                        Parent=controls,
+                })
+
+                local shuffleBtn,shuffleIcon=ControlButton("shuffle",34,18,1,0.45)
+                local prevBtn=ControlButton("skip-back",34,24,2,0.15)
+                local playBtn=NewRoundFrame(999,"Circle",{
+                        Size=UDim2.new(0,58,0,58),
+                        ImageTransparency=0,
+                        LayoutOrder=3,
+                        ZIndex=100003,
+                        ThemeTag={ImageColor3="Primary"},
+                        Parent=controls,
+                })
+                local playScale=New("UIScale",{Scale=1,Parent=playBtn})
+                local iconPlay=IconImage("play",24,0,nil,Color3.new(1,1,1))
+                iconPlay.Position=UDim2.new(0.5,2,0.5,0)
+                iconPlay.Parent=playBtn
+                local iconPause=IconImage("pause",22,1,nil,Color3.new(1,1,1))
+                iconPause.Parent=playBtn
+                local playHit=New("TextButton",{
+                        BackgroundTransparency=1,
+                        Size=UDim2.new(1,6,1,6),
+                        AnchorPoint=Vector2.new(0.5,0.5),
+                        Position=UDim2.new(0.5,0,0.5,0),
+                        Text="",
+                        Parent=playBtn,
+                })
+                local nextBtn=ControlButton("skip-forward",34,24,4,0.15)
+                local loopBtn,loopIcon=ControlButton("repeat",34,18,5,0.45)
+
+                -- -------------------------------------------------------------
+                --  Volume row
+                -- -------------------------------------------------------------
+
+                local volumeRow=New("Frame",{
+                        Name="Volume",
+                        BackgroundTransparency=1,
+                        Size=UDim2.new(1,-40,0,28),
+                        Position=UDim2.new(0,20,0,426),
+                        ZIndex=100002,
+                        Parent=card,
+                })
+
+                local volumeBtn=New("TextButton",{
+                        BackgroundTransparency=1,
+                        Size=UDim2.new(0,28,0,28),
+                        Text="",
+                        ZIndex=100003,
+                        AnchorPoint=Vector2.new(0.5,0.5),
+                        Position=UDim2.new(0,14,0.5,0),
+                        Parent=volumeRow,
+                })
+                local volumeIcon=IconImage("volume-2",18,0.4)
+                volumeIcon.Parent=volumeBtn
+                AddThemeObject(volumeIcon,{ImageColor3="Text"})
+
+                local volumeHolder=New("Frame",{
+                        BackgroundTransparency=1,
+                        Size=UDim2.new(0,150,0,28),
+                        AnchorPoint=Vector2.new(0.5,0.5),
+                        Position=UDim2.new(0.5,8,0.5,0),
+                        Parent=volumeRow,
+                })
+                local volumeSlider=MakeSlider(volumeHolder,1,150,4,11,"Primary",self.GlobalConns)
+                volumeSlider.Set(self.Volume)
+
+                local volumeLabel=New("TextLabel",{
+                        BackgroundTransparency=1,
+                        Size=UDim2.new(0,38,1,0),
+                        AnchorPoint=Vector2.new(1,0.5),
+                        Position=UDim2.new(1,0,0.5,0),
+                        TextXAlignment="Right",
+                        Text=tostring(math.floor(self.Volume*100+0.5)).."%"
+,
+                        TextSize=11,
+                        FontFace=Font.new(Font_,Enum.FontWeight.Medium),
+                        ThemeTag={TextColor3="Placeholder"},
+                        Parent=volumeRow,
+                })
+
+                self.UIElements.Header=header
+                self.UIElements.PlayBtn=playBtn
+                self.UIElements.IconPlay=iconPlay
+                self.UIElements.IconPause=iconPause
+                self.UIElements.ShuffleIcon=shuffleIcon
+                self.UIElements.LoopIcon=loopIcon
+                self.UIElements.VolumeIcon=volumeIcon
+                self.UIElements.SeekSlider=seekSlider
+                self.UIElements.VolumeSlider=volumeSlider
+                self.UIElements.TimeCurrent=timeCurrent
+                self.UIElements.TimeTotal=timeTotal
+                self.UIElements.CardScale=cardScale
+                self.UIElements.PlayScale=playScale
+                self.UIElements.VolumeLabel=volumeLabel
+
+                -- -------------------------------------------------------------
+                --  Playlist panel (revealed when the card expands)
+                -- -------------------------------------------------------------
+
+                local playlist=New("Frame",{
+                        Name="Playlist",
+                        BackgroundTransparency=1,
+                        Size=UDim2.new(1,-40,0,160),
+                        Position=UDim2.new(0,20,0,472),
+                        ZIndex=100002,
+                        Parent=card,
+                })
+
+                local divider=New("Frame",{
+                        Name="Divider",
+                        Size=UDim2.new(1,0,0,1),
+                        BackgroundTransparency=0.92,
+                        BackgroundColor3=Color3.new(1,1,1),
+                        ThemeTag={BackgroundColor3="Text"},
+                        Parent=playlist,
+                })
+
+                local queueLabel=New("TextLabel",{
+                        BackgroundTransparency=1,
+                        Size=UDim2.new(1,0,0,26),
+                        Position=UDim2.new(0,0,0,8),
+                        TextXAlignment="Left",
+                        Text="Queue",
+                        TextSize=13,
+                        FontFace=Font.new(Font_,Enum.FontWeight.SemiBold),
+                        ThemeTag={TextColor3="Text"},
+                        TextTransparency=0.25,
+                        Parent=playlist,
+                })
+
+                local listHolder=New("ScrollingFrame",{
+                        Name="List",
+                        BackgroundTransparency=1,
+                        BorderSizePixel=0,
+                        Size=UDim2.new(1,0,1,-42),
+                        Position=UDim2.new(0,0,0,40),
+                        CanvasSize=UDim2.new(),
+                        AutomaticCanvasSize="Y",
+                        ScrollingDirection="Y",
+                        ScrollBarThickness=3,
+                        ScrollBarImageTransparency=0.4,
+                        ZIndex=100003,
+                        Parent=playlist,
+                })
+                AddThemeObject(listHolder,{ScrollBarImageColor3="Placeholder"})
+
+                New("UIListLayout",{
+                        Padding=UDim.new(0,6),
+                        SortOrder="LayoutOrder",
+                        Parent=listHolder,
+                })
+
+                -- -------------------------------------------------------------
+                --  Minimized bubble
+                -- -------------------------------------------------------------
+
+                local guiParent=(WindUI and WindUI.ScreenGui)or game:GetService("CoreGui")
+
+                local bubbleRoot=New("TextButton",{
+                        Name="WindUIPlayerBubble",
+                        AutoButtonColor=false,
+                        Text="",
+                        BackgroundColor3=Color3.new(1,1,1),
+                        BackgroundTransparency=1,
+                        Size=UDim2.new(0,54,0,54),
+                        Position=UDim2.new(0,24,1,-24),
+                        AnchorPoint=Vector2.new(0,1),
+                        Visible=false,
+                        ZIndex=100000,
+                        Parent=guiParent,
+                })
+                AddThemeObject(bubbleRoot,{BackgroundColor3="Notification"})
+                New("UICorner",{CornerRadius=UDim.new(1,0),Parent=bubbleRoot})
+                New("UIStroke",{
+                        Thickness=1,
+                        Transparency=0.88,
+                        ApplyStrokeMode="Border",
+                        Parent=bubbleRoot,
+                })
+
+                local bubbleDisc=New("Frame",{
+                        Name="BubbleDisc",
+                        BackgroundTransparency=1,
+                        Size=UDim2.new(0,42,0,42),
+                        AnchorPoint=Vector2.new(0.5,0.5),
+                        Position=UDim2.new(0.5,0,0.5,0),
+                        Parent=bubbleRoot,
+                })
+                NewRoundFrame(999,"Circle",{
+                        Size=UDim2.new(1,0,1,0),
+                        ImageTransparency=0.1,
+                        ThemeTag={ImageColor3="ElementBackground"},
+                        Parent=bubbleDisc,
+                })
+                local bubbleLabel=NewRoundFrame(999,"Circle",{
+                        Size=UDim2.new(0,18,0,18),
+                        AnchorPoint=Vector2.new(0.5,0.5),
+                        Position=UDim2.new(0.5,0,0.5,0),
+                        ImageTransparency=0.05,
+                        ThemeTag={ImageColor3="Primary"},
+                        Parent=bubbleDisc,
+                })
+                IconImage("music",10,0.1,nil,Color3.new(1,1,1)).Parent=bubbleLabel
+
+                local bubbleScale=New("UIScale",{Scale=0,Parent=bubbleRoot})
+
+                -- -------------------------------------------------------------
+                --  State helpers
+                -- -------------------------------------------------------------
+
+                local glowTween
+
+                local function SetPlaying(state)
+                        self.Playing=state
+                        Tween(iconPlay,0.18,{ImageTransparency=state and 1 or 0},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+                        Tween(iconPause,0.18,{ImageTransparency=state and 0 or 1},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+                        if state then
+                                if glowTween then
+                                        glowTween:Cancel()
+                                end
+                                glowTween=Tween(glow,1.6,{ImageTransparency=0.78},Enum.EasingStyle.Sine,Enum.EasingDirection.InOut,-1,true)
+                                glowTween:Play()
+                        else
+                                if glowTween then
+                                        glowTween:Cancel()
+                                        glowTween=nil
+                                end
+                                Tween(glow,0.4,{ImageTransparency=0.9},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+                        end
+                end
+
+                local function UpdateVolumeIcon()
+                        local name=self.Volume<=0.001 and"volume-x"or"volume-2"
+                        local img,rect=GetIcon(name)
+                        if img then
+                                volumeIcon.Image=img
+                                if rect then
+                                        volumeIcon.ImageRectSize=rect.ImageRectSize
+                                        volumeIcon.ImageRectOffset=rect.ImageRectPosition
+                                end
+                        end
+                end
+
+                local function UpdateLoopIcon()
+                        local name=self.LoopMode=="one"and"repeat-1"or"repeat"
+                        local img,rect=GetIcon(name)
+                        if img then
+                                loopIcon.Image=img
+                                if rect then
+                                        loopIcon.ImageRectSize=rect.ImageRectSize
+                                        loopIcon.ImageRectOffset=rect.ImageRectPosition
+                                end
+                        end
+                        Tween(loopIcon,0.2,{ImageTransparency=self.LoopMode=="off"and 0.45 or 0},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+                end
+
+                local function UpdateShuffleIcon()
+                        Tween(shuffleIcon,0.2,{ImageTransparency=self.Shuffle and 0 or 0.45},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+                end
+
+                -- -------------------------------------------------------------
+                --  Playlist rows
+                -- -------------------------------------------------------------
+
+                local activeEqBars={}
+
+                local function RefreshRows()
+                        for i,row in next,self.Rows do
+                                local active=(i==self.Index)
+                                row.Background.ImageTransparency=active and 0 or 1
+                                row.Accent.Visible=active
+                                row.Number.Visible=not active
+                                if row.Eq then
+                                        row.Eq.Visible=active
+                                end
+                                if active then
+                                        activeEqBars=row.Bars or{}
+                                end
+                        end
+                        if self.Index==0 or not self.Rows[self.Index]then
+                                activeEqBars={}
+                        end
+                end
+
+                local function BuildPlaylist()
+                        for _,row in next,self.Rows do
+                                row.Frame:Destroy()
+                        end
+                        table.clear(self.Rows)
+                        activeEqBars={}
+
+                        for i,track in next,self.Tracks do
+                                local rowFrame=NewRoundFrame(16,"Squircle",{
+                                        Size=UDim2.new(1,-6,0,46),
+                                        ImageTransparency=1,
+                                        ThemeTag={ImageColor3="ElementBackground"},
+                                        ZIndex=100003,
+                                        Parent=listHolder,
+                                })
+
+                                local accent=NewRoundFrame(99,"Squircle",{
+                                        Size=UDim2.new(0,3,0,20),
+                                        AnchorPoint=Vector2.new(0,0.5),
+                                        Position=UDim2.new(0,0,0.5,0),
+                                        ImageTransparency=0,
+                                        ThemeTag={ImageColor3="Primary"},
+                                        Visible=false,
+                                        Parent=rowFrame,
+                                })
+
+                                local number=New("TextLabel",{
+                                        BackgroundTransparency=1,
+                                        Size=UDim2.new(0,26,1,0),
+                                        Text=tostring(i),
+                                        TextSize=12,
+                                        FontFace=Font.new(Font_,Enum.FontWeight.Medium),
+                                        ThemeTag={TextColor3="Placeholder"},
+                                        Parent=rowFrame,
+                                })
+
+                                local rowEq=New("Frame",{
+                                        BackgroundTransparency=1,
+                                        Size=UDim2.new(0,14,0,12),
+                                        Position=UDim2.new(0,6,0.5,0),
+                                        AnchorPoint=Vector2.new(0,0.5),
+                                        Visible=false,
+                                        Parent=rowFrame,
+                                })
+                                local bars={}
+                                for j=1,3 do
+                                        bars[j]=NewRoundFrame(99,"Squircle",{
+                                                Size=UDim2.new(0,3,0,4),
+                                                AnchorPoint=Vector2.new(0.5,1),
+                                                Position=UDim2.new(j/4,0,1,0),
+                                                ImageTransparency=0.2,
+                                                ThemeTag={ImageColor3="Primary"},
+                                                Parent=rowEq,
+                                        })
+                                end
+
+                                local textBlock=New("Frame",{
+                                        BackgroundTransparency=1,
+                                        Size=UDim2.new(1,-96,1,0),
+                                        Position=UDim2.new(0,32,0,0),
+                                        Parent=rowFrame,
+                                })
+                                local rowTitle=New("TextLabel",{
+                                        BackgroundTransparency=1,
+                                        Size=UDim2.new(1,0,0,18),
+                                        Position=UDim2.new(0,0,0,6),
+                                        Text=track.Title or("Track "..i),
+                                        TextSize=14,
+                                        TextXAlignment="Left",
+                                        TextTruncate="AtEnd",
+                                        FontFace=Font.new(Font_,Enum.FontWeight.Medium),
+                                        ThemeTag={TextColor3="Text"},
+                                        Parent=textBlock,
+                                })
+                                local rowAuthor=New("TextLabel",{
+                                        BackgroundTransparency=1,
+                                        Size=UDim2.new(1,0,0,13),
+                                        Position=UDim2.new(0,0,0,25),
+                                        Text=track.Author or"Unknown Artist",
+                                        TextSize=11,
+                                        TextXAlignment="Left",
+                                        TextTruncate="AtEnd",
+                                        FontFace=Font.new(Font_,Enum.FontWeight.Regular),
+                                        ThemeTag={TextColor3="Placeholder"},
+                                        Parent=textBlock,
+                                })
+                                local rowDuration=New("TextLabel",{
+                                        BackgroundTransparency=1,
+                                        Size=UDim2.new(0,44,1,0),
+                                        AnchorPoint=Vector2.new(1,0.5),
+                                        Position=UDim2.new(1,-10,0.5,0),
+                                        Text=track.Duration and FormatTime(track.Duration)or"--:--",
+                                        TextSize=11,
+                                        TextXAlignment="Right",
+                                        FontFace=Font.new(Font_,Enum.FontWeight.Medium),
+                                        ThemeTag={TextColor3="Placeholder"},
+                                        Parent=rowFrame,
+                                })
+
+                                local hit=New("TextButton",{
+                                        BackgroundTransparency=1,
+                                        Size=UDim2.new(1,0,1,0),
+                                        Text="",
+                                        ZIndex=100004,
+                                        Parent=rowFrame,
+                                })
+
+                                local row={
+                                        Frame=rowFrame,
+                                        Background=rowFrame,
+                                        Accent=accent,
+                                        Number=number,
+                                        Eq=rowEq,
+                                        Bars=bars,
+                                        Duration=rowDuration,
+                                }
+                                self.Rows[i]=row
+
+                                hit.MouseEnter:Connect(function()
+                                        if i~=self.Index then
+                                                Tween(rowFrame,0.15,{ImageTransparency=0.75},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+                                        end
+                                end)
+                                hit.MouseLeave:Connect(function()
+                                        if i~=self.Index then
+                                                Tween(rowFrame,0.15,{ImageTransparency=1},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+                                        end
+                                end)
+                                hit.Activated:Connect(function()
+                                        self.Select(i)
+                                end)
+                        end
+
+                        RefreshRows()
+                end
+
+                -- -------------------------------------------------------------
+                --  Playback logic
+                -- -------------------------------------------------------------
+
+                local RequestId=0
+                local hbConn -- heartbeat connection (declared early: Destroy captures it)
+                local shadow=root:FindFirstChild"Shadow"
+
+                local function ApplyVolume(ratio)
+                        self.Volume=ratio
+                        sound.Volume=ratio
+                        volumeLabel.Text=tostring(math.floor(ratio*100+0.5)).."%"
+                        if ratio>0.001 then
+                                self.LastVolume=ratio
+                        end
+                        UpdateVolumeIcon()
+                end
+
+                volumeSlider.OnChanged=ApplyVolume
+                volumeSlider.OnEnded=ApplyVolume
+
+                self.Select=function(i,autoplay)
+                        if self.Destroyed then
+                                return
+                        end
+                        local n=#self.Tracks
+                        if n==0 then
+                                return
+                        end
+                        i=math.clamp(i,1,n)
+                        self.Index=i
+                        RequestId=RequestId+1
+                        local reqId=RequestId
+                        local track=self.Tracks[i]
+
+                        Tween(title,0.16,{TextTransparency=1},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+                        Tween(author,0.16,{TextTransparency=1},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+                        task.delay(0.18,function()
+                                if self.Destroyed then
+                                        return
+                                end
+                                title.Text=track.Title or("Track "..i)
+                                author.Text=track.Author or"Unknown Artist"
+                                Tween(title,0.3,{TextTransparency=0},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+                                Tween(author,0.3,{TextTransparency=0},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+                        end)
+
+                        seekSlider.Set(0)
+                        timeCurrent.Text="0:00"
+                        timeTotal.Text=track.Duration and FormatTime(track.Duration)or"0:00"
+
+                        coverBtn.Visible=track.Icon~=nil
+                        disc.Visible=track.Icon==nil
+                        if track.Icon then
+                                coverImage.Image=""
+                                coverScale.Scale=0.94
+                                task.spawn(function()
+                                        local asset=ResolveImage(track.Icon)
+                                        if asset and reqId==RequestId and not self.Destroyed then
+                                                coverImage.Image=asset
+                                                Tween(coverScale,0.4,{Scale=1},Enum.EasingStyle.Back,Enum.EasingDirection.Out):Play()
+                                        end
+                                end)
+                        end
+
+                        self.Loading=true
+                        loader.Visible=true
+                        loader.Rotation=0
+                        Tween(playScale,0.2,{Scale=0.92},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+
+                        RefreshRows()
+
+                        task.spawn(function()
+                                local ok,asset=ResolveSource(track.Source)
+                                if self.Destroyed then
+                                        return
+                                end
+                                self.Loading=false
+                                loader.Visible=false
+                                Tween(playScale,0.3,{Scale=1},Enum.EasingStyle.Back,Enum.EasingDirection.Out):Play()
+                                if not ok then
+                                        warn("[ WindUI.Player ] "..tostring(asset))
+                                        pcall(function()
+                                                if WindUI and WindUI.Notify then
+                                                        WindUI:Notify{
+                                                                Title="Music Player",
+                                                                Content=tostring(asset),
+                                                                Duration=5,
+                                                        }
+                                                end
+                                        end)
+                                        return
+                                end
+                                if reqId~=RequestId then
+                                        return
+                                end
+                                sound.SoundId=asset
+                                sound.TimePosition=0
+                                if autoplay~=false and self.AutoPlay then
+                                        sound:Play()
+                                        SetPlaying(true)
+                                else
+                                        SetPlaying(false)
+                                end
+                        end)
+                end
+
+                function self.Play()
+                        if self.Destroyed or self.Loading then
+                                return
+                        end
+                        if not sound.IsLoaded then
+                                return
+                        end
+                        sound:Play()
+                        SetPlaying(true)
+                end
+
+                function self.Pause()
+                        if self.Destroyed then
+                                return
+                        end
+                        sound:Pause()
+                        SetPlaying(false)
+                end
+
+                function self.Toggle()
+                        if self.Playing then
+                                self.Pause()
+                        else
+                                self.Play()
+                        end
+                end
+
+                function self.Next(auto)
+                        if self.Destroyed then
+                                return
+                        end
+                        local n=#self.Tracks
+                        if n==0 then
+                                return
+                        end
+                        if self.Shuffle and n>1 then
+                                local pick=self.Index
+                                while pick==self.Index do
+                                        pick=math.random(1,n)
+                                end
+                                self.Select(pick)
+                                return
+                        end
+                        local nxt=self.Index+1
+                        if nxt>n then
+                                if self.LoopMode~="off"or not auto then
+                                        nxt=1
+                                else
+                                        self.Pause()
+                                        sound.TimePosition=0
+                                        seekSlider.Set(0)
+                                        timeCurrent.Text="0:00"
+                                        return
+                                end
+                        end
+                        self.Select(nxt)
+                end
+
+                function self.Prev()
+                        if self.Destroyed then
+                                return
+                        end
+                        if (sound.TimePosition or 0)>3 or #self.Tracks==1 then
+                                sound.TimePosition=0
+                                return
+                        end
+                        local prv=self.Index-1
+                        if prv<1 then
+                                prv=#self.Tracks
+                        end
+                        self.Select(prv)
+                end
+
+                function self.SetVolume(ratio)
+                        ratio=math.clamp(tonumber(ratio)or 0,0,1)
+                        volumeSlider.Set(ratio)
+                        ApplyVolume(ratio)
+                end
+
+                function self.SetTracks(tracks)
+                        if type(tracks)=="table"and #tracks>0 then
+                                self.Tracks=tracks
+                                self.Index=0
+                                BuildPlaylist()
+                                self.Select(1)
+                        end
+                end
+
+                -- -------------------------------------------------------------
+                --  Expand / minimize
+                -- -------------------------------------------------------------
+
+                self.SetExpanded=function(state)
+                        state=state and true or false
+                        if state==self.Expanded then
+                                return
+                        end
+                        self.Expanded=state
+                        local h=state and CardHeightExpanded or CardHeight
+                        Tween(root,0.5,{Size=UDim2.new(0,CardWidth,0,h)},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+                        Tween(card,0.5,{Size=UDim2.new(1,0,0,h)},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+                end
+
+                self.Minimize=function()
+                        if self.Minimized then
+                                return
+                        end
+                        self.Minimized=true
+                        Tween(cardScale,0.28,{Scale=0.9},Enum.EasingStyle.Quint,Enum.EasingDirection.In):Play()
+                        Tween(card,0.28,{ImageTransparency=1},Enum.EasingStyle.Quint,Enum.EasingDirection.In):Play()
+                        if shadow then
+                                Tween(shadow,0.28,{ImageTransparency=1},Enum.EasingStyle.Quint,Enum.EasingDirection.In):Play()
+                        end
+                        task.delay(0.3,function()
+                                if self.Destroyed then
+                                        return
+                                end
+                                root.Visible=false
+                                bubbleRoot.Visible=true
+                                Tween(bubbleScale,0.4,{Scale=1},Enum.EasingStyle.Back,Enum.EasingDirection.Out):Play()
+                        end)
+                end
+
+                self.Restore=function()
+                        if not self.Minimized then
+                                return
+                        end
+                        self.Minimized=false
+                        Tween(bubbleScale,0.2,{Scale=0},Enum.EasingStyle.Quint,Enum.EasingDirection.In):Play()
+                        task.delay(0.2,function()
+                                if self.Destroyed then
+                                        return
+                                end
+                                bubbleRoot.Visible=false
+                                root.Visible=true
+                                Tween(cardScale,0.4,{Scale=1},Enum.EasingStyle.Back,Enum.EasingDirection.Out):Play()
+                                Tween(card,0.35,{ImageTransparency=0.02},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+                                if shadow then
+                                        Tween(shadow,0.35,{ImageTransparency=0.45},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+                                end
+                        end)
+                end
+
+                self.Destroy=function()
+                        if self.Destroyed then
+                                return
+                        end
+                        self.Destroyed=true
+                        pcall(function()
+                                sound:Stop()
+                        end)
+                        pcall(function()
+                                sound:Destroy()
+                        end)
+                        for _,c in next,self.GlobalConns do
+                                pcall(function()
+                                        c:Disconnect()
+                                end)
+                        end
+                        table.clear(self.GlobalConns)
+                        if hbConn then
+                                pcall(function()
+                                        hbConn:Disconnect()
+                                end)
+                        end
+                        pcall(function()
+                                root:Destroy()
+                        end)
+                        pcall(function()
+                                bubbleRoot:Destroy()
+                        end)
+                end
+
+                -- -------------------------------------------------------------
+                --  Wire up buttons
+                -- -------------------------------------------------------------
+
+                playHit.Activated:Connect(function()
+                        if self.Loading then
+                                return
+                        end
+                        self.Toggle()
+                        Tween(playScale,0.12,{Scale=0.88},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+                        task.delay(0.1,function()
+                                if not self.Destroyed then
+                                        Tween(playScale,0.3,{Scale=1},Enum.EasingStyle.Back,Enum.EasingDirection.Out):Play()
+                                end
+                        end)
+                end)
+                prevBtn.Activated:Connect(function()
+                        self.Prev()
+                end)
+                nextBtn.Activated:Connect(function()
+                        self.Next(false)
+                end)
+                shuffleBtn.Activated:Connect(function()
+                        self.Shuffle=not self.Shuffle
+                        UpdateShuffleIcon()
+                end)
+                loopBtn.Activated:Connect(function()
+                        self.LoopMode=self.LoopMode=="off"and"all"or(self.LoopMode=="all"and"one"or"off")
+                        UpdateLoopIcon()
+                end)
+                volumeBtn.Activated:Connect(function()
+                        if self.Volume>0.001 then
+                                self.LastVolume=self.Volume
+                                self.SetVolume(0)
+                        else
+                                self.SetVolume(self.LastVolume>0.001 and self.LastVolume or 0.6)
+                        end
+                end)
+                playlistBtn.Activated:Connect(function()
+                        self.SetExpanded(not self.Expanded)
+                end)
+                minimizeBtn.Activated:Connect(function()
+                        self.Minimize()
+                end)
+                closeBtn.Activated:Connect(function()
+                        self.Destroy()
+                end)
+
+                -- -------------------------------------------------------------
+                --  Dragging (card + bubble)
+                -- -------------------------------------------------------------
+
+                Creator.Drag(root,{dragStrip,titleBlock})
+
+                local bubbleDragging=false
+                local bubbleMoved=false
+                local bubbleDragStart,bubbleStartPos
+
+                table.insert(self.GlobalConns,bubbleRoot.InputBegan:Connect(function(input)
+                        if input.UserInputType==Enum.UserInputType.MouseButton1 or input.UserInputType==Enum.UserInputType.Touch then
+                                bubbleDragging=true
+                                bubbleMoved=false
+                                bubbleDragStart=input.Position
+                                bubbleStartPos=bubbleRoot.Position
+                        end
+                end))
+                table.insert(self.GlobalConns,UserInputService.InputChanged:Connect(function(input)
+                        if bubbleDragging and(input.UserInputType==Enum.UserInputType.MouseMovement or input.UserInputType==Enum.UserInputType.Touch)then
+                                local delta=input.Position-bubbleDragStart
+                                if math.abs(delta.X)>5 or math.abs(delta.Y)>5 then
+                                        bubbleMoved=true
+                                end
+                                if bubbleMoved then
+                                        bubbleRoot.Position=UDim2.new(
+                                                bubbleStartPos.X.Scale,bubbleStartPos.X.Offset+delta.X,
+                                                bubbleStartPos.Y.Scale,bubbleStartPos.Y.Offset+delta.Y
+                                        )
+                                end
+                        end
+                end))
+                table.insert(self.GlobalConns,UserInputService.InputEnded:Connect(function(input)
+                        if input.UserInputType==Enum.UserInputType.MouseButton1 or input.UserInputType==Enum.UserInputType.Touch then
+                                bubbleDragging=false
+                        end
+                end))
+                bubbleRoot.Activated:Connect(function()
+                        if not bubbleMoved then
+                                self.Restore()
+                        end
+                end)
+
+                -- -------------------------------------------------------------
+                --  Sound events
+                -- -------------------------------------------------------------
+
+                sound.Ended:Connect(function()
+                        if self.Destroyed then
+                                return
+                        end
+                        if self.LoopMode=="one"then
+                                sound.TimePosition=0
+                                sound:Play()
+                        else
+                                self.Next(true)
+                        end
+                end)
+
+                sound.Loaded:Connect(function()
+                        if self.Destroyed then
+                                return
+                        end
+                        local len=sound.TimeLength
+                        if len>0 then
+                                timeTotal.Text=FormatTime(len)
+                                local row=self.Rows[self.Index]
+                                if row then
+                                        row.Duration.Text=FormatTime(len)
+                                end
+                        end
+                end)
+
+                -- -------------------------------------------------------------
+                --  Render loop (spin, equalizer, progress)
+                -- -------------------------------------------------------------
+
+                local hbConn2=RunService.Heartbeat:Connect(function(dt)
+                        if self.Destroyed then
+                                return
+                        end
+
+                        -- smooth vinyl spin (speed lerps in/out so it never jumps)
+                        local target=self.Playing and 55 or 0
+                        self.SpinSpeed+=(target-self.SpinSpeed)*math.min(dt*3.5,1)
+                        self.SpinAngle=(self.SpinAngle+self.SpinSpeed*dt)%360
+                        disc.Rotation=self.SpinAngle
+                        bubbleDisc.Rotation=self.SpinAngle
+
+                        if self.Loading then
+                                loader.Rotation=(loader.Rotation+dt*260)%360
+                        end
+
+                        -- equalizer bars
+                        self.EqClock+=dt
+                        for i,bar in next,eqBars do
+                                local h
+                                if self.Playing then
+                                        h=0.25+0.75*math.abs(
+                                                math.sin(self.EqClock*2.6+i*0.9)
+                                                +0.35*math.sin(self.EqClock*4.3+i*1.7)
+                                        )/1.35
+                                else
+                                        h=0.16
+                                end
+                                h=math.clamp(h,0.12,1)
+                                bar.Size=UDim2.new(0,3,0,math.max(2,14*h))
+                        end
+                        if self.Playing and next(activeEqBars)then
+                                for i,bar in next,activeEqBars do
+                                        local h=math.clamp(
+                                                0.25+0.75*math.abs(math.sin(self.EqClock*2.6+i*1.1+0.4))/1.1,
+                                                0.15,1
+                                        )
+                                        bar.Size=UDim2.new(0,3,0,math.max(2,10*h))
+                                end
+                        end
+
+                        -- progress
+                        if not self.DraggingSeek then
+                                local len=sound.TimeLength or 0
+                                if len>0 then
+                                        seekSlider.Set(sound.TimePosition/len)
+                                        timeCurrent.Text=FormatTime(sound.TimePosition or 0)
+                                end
+                        end
+                end)
+                hbConn=hbConn2
+                self._hbConn=hbConn2
+
+                -- -------------------------------------------------------------
+                --  Entrance animation & init
+                -- -------------------------------------------------------------
+
+                local startPos=root.Position
+                cardScale.Scale=0.92
+                root.Position=startPos+UDim2.new(0,0,0,36)
+                if shadow then
+                        shadow.ImageTransparency=1
+                end
+
+                task.defer(function()
+                        if self.Destroyed then
+                                return
+                        end
+                        Tween(cardScale,0.45,{Scale=1},Enum.EasingStyle.Back,Enum.EasingDirection.Out):Play()
+                        Tween(root,0.5,{Position=startPos},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+                        if shadow then
+                                Tween(shadow,0.6,{ImageTransparency=0.45},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+                        end
+                end)
+
+                UpdateLoopIcon()
+                UpdateShuffleIcon()
+                UpdateVolumeIcon()
+                BuildPlaylist()
+                self.Select(1,self.AutoPlay)
+
+                return self
+        end
+
+        return PlayerModule
+end
+
+function a.ae()
 
 
 
@@ -14072,21 +14710,7 @@ local au=a.load'z'
 
 
 return function(av)
-if av.WindowStyle=="Shitaro" or av.WindowStyle=="Fatality" then
-av.Theme=av.Theme or "Shitaro"
-av.Radius=av.Radius or 6
-av.ElementsRadius=av.ElementsRadius or 4
-elseif av.WindowStyle=="Kiti" or av.WindowStyle=="Zoophack" then
-av.Theme=av.Theme or "Kiti"
-av.Radius=av.Radius or 8
-av.ElementsRadius=av.ElementsRadius or 6
-end
-if av.IconOnlyTabs then
-av.SideBarWidth=av.SideBarWidth or 56
-end
 local aw={
-IconOnlyTabs=av.IconOnlyTabs or false,
-WindowStyle=av.WindowStyle,
 Title=av.Title or"UI Library",
 Author=av.Author,
 Icon=av.Icon,
@@ -15784,67 +16408,6 @@ end
 end
 end
 
-function aw.SetIconOnlyTabs(H,J)
-aw.IconOnlyTabs=J
-local targetWidth=J and 56 or 200
-pcall(function()
-aw.UIElements.SideBar.Size=UDim2.new(0,targetWidth,1,aw.UIElements.SideBar.Size.Y.Offset)
-end)
-if G and G.Tabs then
-for _,tab in pairs(G.Tabs) do
-if tab.SetIconOnly then
-tab:SetIconOnly(J)
-end
-end
-end
-end
-
-function aw.SetThemeSmooth(H,themeName,duration,easingStyle)
-return av.WindUI:SetThemeSmooth(themeName,duration,easingStyle)
-end
-
-function aw.ApplyShitaroStyle(H)
-aw:SetThemeSmooth("Shitaro",0.35)
-aw.Radius=6
-aw.ElementsRadius=4
-pcall(function()
-if aw.UIElements and aw.UIElements.Main and aw.UIElements.Main.UICorner then
-aw.UIElements.Main.UICorner.CornerRadius=UDim.new(0,6)
-end
-end)
-end
-
-function aw.ApplyKitiStyle(H)
-aw:SetThemeSmooth("Kiti",0.35)
-aw.Radius=8
-aw.ElementsRadius=6
-pcall(function()
-if aw.UIElements and aw.UIElements.Main and aw.UIElements.Main.UICorner then
-aw.UIElements.Main.UICorner.CornerRadius=UDim.new(0,8)
-end
-end)
-end
-
-function aw.StartRainbow(H,cfg)
-return av.WindUI:StartRainbow(cfg)
-end
-
-function aw.StopRainbow(H)
-return av.WindUI:StopRainbow()
-end
-
-function aw.AddCharacterPreview(H,cfg)
-if aw.CurrentTab and aw.CurrentTab.CharacterPreview then
-return aw.CurrentTab:CharacterPreview(cfg)
-end
-end
-
-function aw.AddMapDuper(H,cfg)
-if aw.CurrentTab and aw.CurrentTab.MapDuper then
-return aw.CurrentTab:MapDuper(cfg)
-end
-end
-
 function aw.Divider(H)
 local J=ao("Frame",{
 Size=UDim2.new(1,0,0,1),
@@ -16537,12 +17100,10 @@ aa.Themes[aA.Name]=aA
 return aA
 end
 
-local rainbowConnection=nil
-
-function aa.SetTheme(az,aA,smooth,dur,style,dir)
+function aa.SetTheme(az,aA)
 if aa.Themes[aA]then
 aa.Theme=aa.Themes[aA]
-as.SetTheme(aa.Themes[aA],smooth,dur,style,dir)
+as.SetTheme(aa.Themes[aA])
 
 if aa.OnThemeChangeFunction then
 aa.OnThemeChangeFunction(aA)
@@ -16551,66 +17112,6 @@ end
 return aa.Themes[aA]
 end
 return nil
-end
-
-function aa.SetThemeSmooth(az,aA,dur,style,dir)
-return aa:SetTheme(aA,true,dur or 0.35,style or Enum.EasingStyle.Quart,dir or Enum.EasingDirection.Out)
-end
-
-function aa.StartRainbow(az,cfg)
-cfg=cfg or {}
-local speed=cfg.Speed or 0.25
-local saturation=cfg.Saturation or 0.85
-local value=cfg.Value or 1
-local target=cfg.Target or "Accent"
-
-if rainbowConnection then
-rainbowConnection:Disconnect()
-rainbowConnection=nil
-end
-
-local RunService=game:GetService("RunService")
-local hue=0
-rainbowConnection=RunService.Heartbeat:Connect(function(dt)
-hue=(hue+dt*speed)%1
-local col=Color3.fromHSV(hue,saturation,value)
-if aa.Theme then
-aa.Theme[target]=col
-if as and as.Objects then
-for obj,data in pairs(as.Objects) do
-for prop,tag in pairs(data.Properties or {}) do
-if tag==target then
-pcall(function() obj[prop]=col end)
-end
-end
-end
-end
-end
-end)
-return rainbowConnection
-end
-
-function aa.StopRainbow(az)
-if rainbowConnection then
-rainbowConnection:Disconnect()
-rainbowConnection=nil
-end
-end
-
-function aa.ApplyShitaroStyle(az,win)
-if win and win.ApplyShitaroStyle then
-win:ApplyShitaroStyle()
-else
-aa:SetThemeSmooth("Shitaro",0.35)
-end
-end
-
-function aa.ApplyKitiStyle(az,win)
-if win and win.ApplyKitiStyle then
-win:ApplyKitiStyle()
-else
-aa:SetThemeSmooth("Kiti",0.35)
-end
 end
 
 function aa.GetThemes(az)
@@ -16698,6 +17199,11 @@ end
 function aa.Popup(az,aA)
 aA.WindUI=aa
 return a.load'u'.new(aA,aa.ScreenGui.Popups)
+end
+
+function aa.Player(az,aA)
+aA.WindUI=aa
+return a.load'af'.New(aA)
 end
 
 aa.Themes=a.load'v'(aa,as)
